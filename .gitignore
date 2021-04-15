@@ -1,0 +1,8 @@
+#dependencies
+/backend/node_modules
+
+
+#vim_files
+
+*.swp
+
