@@ -1,6 +1,7 @@
 #dependencies
 /backend/node_modules
-/nepalimerchandise/node_modules
+/nepmerch/node_modules
+/nepmerch/uploads
 
 #vim_files
 
