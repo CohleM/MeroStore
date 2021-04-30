@@ -1,7 +1,39 @@
 const router = require("express").Router();
 const multer = require("multer");
-const {  Product } = require("../models/product");
+//const {  Product } = require("../models/product");
+const { productModel}  = require("../models/product");
 //const product = require("../models/product");
+const stores = [
+	{ email: "user1@gmail.com", name: "manish" },
+	{ email: "user2@gmail.com", name: "sanket" },
+];
+
+	
+let Product = '';
+let db = 'sanket';
+
+
+//console.log(productModel);
+stores.every( (element, index) => {
+	if(element.name == db) {
+		Product = productModel[index];
+		return false;
+	}
+	else return true;
+});
+
+router.route("/pr").post(async (req, res) => {
+	//loginValidation
+
+
+	try {
+		res.status(200).send(productModel);	
+	} catch (err) {
+		res.status(400).send(err);
+	}
+});
+	
+	
 
 const auth = require("../middlewares/auth");
 var storage = multer.diskStorage({
@@ -65,7 +97,7 @@ router.post("/uploadProduct", (req, res) => {
 // 	});
 // });
 
-//Gaurab Dhungel
+
 
 router.route("/getProducts").post((req, res) => {
 	let order = req.body.order ? req.body.order : "desc";
