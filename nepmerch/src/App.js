@@ -23,6 +23,7 @@ import History from "./components/users/History";
 import HomePage from "./components/HomePage/HomePage";
 import Footer from "./components/utilities/Footer";
 import ProductPage from "./components/ProductPage/ProductPage";
+import MainStore from "./components/StorePage/MainStore";
 import SearchFeature from "./components/utilities/SearchFeature";
 import CardsWithReview from "./components/HomePage/sections/CardsWithReview";
 const Main = withRouter(({ location }) => {
@@ -36,6 +37,7 @@ const Main = withRouter(({ location }) => {
 				location.pathname !== "/users/register" && <Navbar />}
 
 			<Route exact path="/" exact component={HomePage} />
+				<Route exact path="/store/:storeName" component={MainStore} />
 			<br />
 			<Switch>
 				{/* <Route exact path="/edit/:id" component={EditExercise} /> */}

@@ -2,6 +2,7 @@
 //const conn1 = require('../server.js');
 const mongoose = require("mongoose");
 const {userConnection, newConnection} = require('../connections');
+//const {userConnection, newConnection} = require('../DB/connections');
 const { array } = require("prop-types");
 const userSchema = new mongoose.Schema({
 	name: {

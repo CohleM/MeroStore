@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
-
+//const mongoose = require("mongoose");
+require('./connections');
 require("dotenv").config();
 
 const app = express();
@@ -10,10 +10,10 @@ const port = process.env.PORT || 5000;
 //middlewares
 app.use(cors());
 app.use(express.json());
+//mongoose.set('bufferCommands', false);
+//const uri1 = process.env.ATLAS_URI1;
 
-const uri1 = process.env.ATLAS_URI1;
-
-const uri2 = process.env.ATLAS_URI2;
+//const uri2 = process.env.ATLAS_URI2;
 //mongoose.connect(uri, {
 //	useNewUrlParser: true,
 //	useCreateIndex: true,
@@ -33,10 +33,12 @@ const uri2 = process.env.ATLAS_URI2;
 //
 const userAuthRouter = require("./routes/userAuth");
 const product = require("./routes/product");
+
 // app.use('/exercises', exerciseRouter);
 // app.use('/users', usersRouter);
 app.use("/users", userAuthRouter);
 app.use("/product", product);
+app.use("/store", require("./routes/store"));
 //var assetsPath = path.join(__dirname, '../uploads');
 //this shit hurts
 //hurt me for 2days

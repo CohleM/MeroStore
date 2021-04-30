@@ -13,7 +13,7 @@ const path = require('path'), projectPath = path.resolve( process.cwd());
 
 //const forked = fork('../nepalimerchandise/script.js',  { 'cwd': projectPath}
 //);
-const forked = fork('../nepalimerchandise/app.js',  { 'cwd': '../nepalimerchandise' }
+const forked = fork('../nepmerch/app.js',  { 'cwd': '../nepmerch' }
 );
 
 
