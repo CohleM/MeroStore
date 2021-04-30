@@ -1,7 +1,6 @@
-
 //const conn1 = require('../server.js');
 const mongoose = require("mongoose");
-const { connectionsArr } = require('../connections');
+const { connectionsArr } = require("../connections");
 //const {userConnection, newConnection} = require('../DB/connections');
 const { array } = require("prop-types");
 const userSchema = new mongoose.Schema({
@@ -39,12 +38,10 @@ const userSchema = new mongoose.Schema({
 	},
 });
 
-
-
 //const User  = newConnection.model('User',userSchema)
 let userModel = [];
-connectionsArr.forEach( (element,index)  => {
-	userModel.push(element.model('User' + toString(index), userSchema ) 	);
-})
+connectionsArr.forEach((element, index) => {
+	userModel.push(element.model("User" + index, userSchema));
+});
 //module.exports = User;
-	module.exports = userModel;
+module.exports = { userModel };

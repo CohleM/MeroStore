@@ -1,7 +1,10 @@
 const router = require("express").Router();
-const User = require("../models/user");
-const { Product } = require("../models/product");
-const { Payment } = require("../models/payment");
+
+
+const { paymentModel  } = require("../models/payment");
+const { userModel }  = require("../models/user");
+const { productModel}  = require("../models/product");
+
 const bcrypt = require("bcryptjs");
 const {
 	registerValidation,
@@ -10,11 +13,52 @@ const {
 const jwt = require("jsonwebtoken");
 const auth = require("../middlewares/auth");
 const asnc = require("async");
+
+
 router.route("/").get(auth, (req, res) => {
 	res.send("whaup biatch");
-	console.log("whats up motherfucker");
+
 	console.log(req.user);
 });
+
+
+
+
+
+//const product = require("../models/product");
+const stores = [
+	{ email: "user1@gmail.com", name: "manish" },
+	{ email: "user2@gmail.com", name: "sanket" },
+];
+
+	
+let User = '';
+let Product = '';
+let Payment  = '';
+let db = 'sanket';
+
+
+//console.log(productModel);
+stores.every( (element, index) => {
+	if(element.name == db) {
+		User = userModel[index];
+		Product = productModel[index];
+		Payment  = paymentModel[index];
+
+		return false;
+	}
+	else return true;
+})
+
+
+
+//const product = require("../models/product");
+	
+
+
+
+
+
 
 router.post("/register", async (req, res) => {
 	console.log("this is body :", req.body);
