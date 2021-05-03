@@ -98,7 +98,11 @@ function RegisterUser(props) {
 		<div>
 			<div className={classes.root1}>
 				<Container maxWidth="xl">
-					<Paper variant="outlined" className={classes.paper} style={{}}>
+					<Paper
+						variant="outlined"
+						className={classes.paper}
+						style={{}}
+					>
 						<form noValidate autoComplete="off">
 							<Grid
 								container
@@ -121,7 +125,9 @@ function RegisterUser(props) {
 										fullWidth
 										id="standard-basic"
 										label="Username"
-										onChange={(e) => setusername(e.target.value)}
+										onChange={(e) =>
+											setusername(e.target.value)
+										}
 										helperText={usernameError}
 									/>
 								</Grid>
@@ -131,7 +137,9 @@ function RegisterUser(props) {
 										fullWidth
 										id="standard-basic"
 										label="Email"
-										onChange={(e) => setemail(e.target.value)}
+										onChange={(e) =>
+											setemail(e.target.value)
+										}
 										helperText={emailError}
 									/>
 								</Grid>
@@ -144,7 +152,9 @@ function RegisterUser(props) {
 										type="password"
 										autoComplete="current-password"
 										fullWidth
-										onChange={(e) => setpassword(e.target.value)}
+										onChange={(e) =>
+											setpassword(e.target.value)
+										}
 										helperText={passwordError}
 									/>
 								</Grid>
@@ -160,7 +170,10 @@ function RegisterUser(props) {
 									</Button>
 								</Grid>
 								<Grid item xs={12}>
-									<Typography variant="overline" color="textSecondary">
+									<Typography
+										variant="overline"
+										color="textSecondary"
+									>
 										Already have an Account ?{" "}
 									</Typography>
 									<Link
@@ -168,7 +181,9 @@ function RegisterUser(props) {
 										underline="none"
 										color="textPrimary"
 										style={{ outline: "none" }}
-										onClick={() => props.history.push("/users/login")}
+										onClick={() =>
+											props.history.push("/users/login")
+										}
 									>
 										{" "}
 										LOGIN

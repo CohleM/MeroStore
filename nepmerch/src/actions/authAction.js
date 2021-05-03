@@ -13,6 +13,7 @@ import {
 	CART_LOADED,
 	REMOVE_FROM_CART,
 	PAYMENT_SUCCESS,
+	LOAD_STORE,
 } from "./types";
 import { USER_SERVER } from "../components/config";
 import axios from "axios";
@@ -302,3 +303,53 @@ export const paymentSuccess = (payment, cartDetail) => (dispatch, getState) => {
 			);
 		});
 };
+
+
+
+
+
+
+export const loadStore = (storeName) => (dispatch) => {
+	console.log('this is from redux', storeName);
+	dispatch({
+				type: LOAD_STORE,
+				payload: storeName, 
+			})
+	//headers
+	const config = {
+		"Content-type": "application/json",
+	};
+
+	//convert js object to json
+//	//this stringfy doesn't work fires up error
+//	const body = JSON.stringify({ username, email, password });
+//	//console.log(body);
+//	//now we make a req to the server
+//	console.log("this executed woow");
+	axios
+		.post(
+			`${USER_SERVER}/store/connectStore`,
+			storeName
+			,
+			config
+		)
+		.then((res) => {
+			console.log("StoreSent");
+			//console.log(res.data);
+		
+		})
+		.catch((err) => {
+			console.log(err.response);
+			dispatch(
+				returnErrors(
+					err.response.data.message,
+					err.response.data.type,
+					err.response.status,
+					"storeNOTsent"
+				)
+			);
+			
+		});
+};
+
+

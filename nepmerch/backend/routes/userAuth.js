@@ -16,7 +16,7 @@ const asnc = require("async");
 
 
 router.route("/").get(auth, (req, res) => {
-	res.send("whaup biatch");
+	res.send("whaup bro");
 
 	console.log(req.user);
 });

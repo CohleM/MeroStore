@@ -14,3 +14,8 @@ export const CART_LOADING = "CART_LOADING";
 export const CART_LOADED = "CART_LOADED";
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 export const PAYMENT_SUCCESS = "PAYMENT_SUCCESS";
+export const LOAD_USER = "LOAD_USER";
+
+
+export const LOAD_STORE = "LOAD_STORE";
+

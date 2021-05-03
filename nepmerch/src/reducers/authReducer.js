@@ -12,12 +12,15 @@ import {
 	CART_LOADED,
 	REMOVE_FROM_CART,
 	PAYMENT_SUCCESS,
+	LOAD_USER,
+	LOAD_STORE,
 } from "../actions/types";
 
 const initialState = {
 	token: localStorage.getItem("token"),
 	isAuthenticated: null,
 	isLoading: false,
+	storeName: null,
 	user: {
 		cart: [],
 		history: [],
@@ -37,6 +40,12 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				isLoading: true,
+			};
+
+		case LOAD_STORE:
+			return {
+				...state,
+				storeName:action.payload ,
 			};
 
 		case USER_LOADED:
