@@ -12,6 +12,8 @@ const {
 } = require("../validations/userValidation");
 const jwt = require("jsonwebtoken");
 const auth = require("../middlewares/auth");
+
+const connDB  = require("../middlewares/connectDB");
 const asnc = require("async");
 
 
@@ -22,8 +24,12 @@ router.route("/").get(auth, (req, res) => {
 });
 
 
+router.post("/sampletest", connDB, (req, res) => {
+	
+	res.send(req.body.dbid );
 
-
+	console.log('This is sampleTest req', req.User);
+});
 
 //const product = require("../models/product");
 const stores = [

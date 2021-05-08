@@ -74,6 +74,7 @@ router.post("/uploadImage", (req, res) => {
 });
 
 router.post("/uploadProduct", (req, res) => {
+	//console.log(req.user);
 	const product = new Product(req.body);
 	product.save((err) => {
 		if (err) {
