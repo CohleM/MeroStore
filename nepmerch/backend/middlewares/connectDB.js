@@ -16,8 +16,8 @@ function connDB(req, res, next) {
 	//	let User = "";
 	//	let Product = "";
 	//	let Payment = "";
-		let db = "sanket";
-		req.dbid = req.body.dbid;
+		let db = req.body.dbid;
+		
 
 		//console.log(productModel);
 		stores.every((element, index) => {
