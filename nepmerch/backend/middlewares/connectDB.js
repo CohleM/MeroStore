@@ -5,7 +5,10 @@ const { productModel}  = require("../models/product");
 
 function connDB(req, res, next) {
 
-	console.log('this is connDB', req.body.dbid);
+	console.log('this is from connDB ', req.query.storeName);
+	//console.log('this is connDB', req.body.dbid);
+	//
+	//console.log('this is connDB', req.query.store);
 	try {
 		//so this is where we need to add something
 		const stores = [
@@ -16,7 +19,8 @@ function connDB(req, res, next) {
 	//	let User = "";
 	//	let Product = "";
 	//	let Payment = "";
-		let db = req.body.dbid;
+		//let db = "manish"; 
+		let db = req.query.storeName;
 		
 
 		//console.log(productModel);

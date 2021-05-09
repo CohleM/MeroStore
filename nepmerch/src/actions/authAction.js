@@ -20,6 +20,7 @@ import axios from "axios";
 import { returnErrors, clearErrors } from "./errorAction";
 //Checking token and loading user
 
+import { connect, useDispatch, useSelector } from "react-redux";
 //initially this function is created and takes in two parameters
 export const loadUser = () => (dispatch, getState) => {
 	//dipathing means firing action to the reducers
@@ -125,11 +126,15 @@ export const register = ({ username, email, password }) => (dispatch) => {
 		});
 };
 
-export const login = ({ email, password }) => (dispatch) => {
+export const login = ({ email, password }) => (dispatch, getState) => {
 	const config = {
 		"Content-type": "application/json",
 	};
-
+	const { auth }  = getState();	
+//	const storename = useSelector((state) => state.auth.storeName);
+	console.log('this is from ggg', auth.storeName );
+	//console.log('this is from gggg ', storename);
+	const sample = "test";
 	axios
 		.post(
 			`${USER_SERVER}/users/login`,
@@ -137,7 +142,7 @@ export const login = ({ email, password }) => (dispatch) => {
 				email,
 				password,
 			},
-			config
+			{ params: { sample }, config }
 		)
 		.then((res) => {
 			dispatch({
@@ -169,9 +174,12 @@ export const logout = () => (dispatch) => {
 };
 
 export const addToCart = (productId) => (dispatch, getState) => {
+
+	const { auth }  = getState();	
+	const storeName = auth.storeName;
 	axios
 		.get(
-			`${USER_SERVER}/users/addToCart?id=${productId}`,
+			`${USER_SERVER}/users/addToCart?id=${productId}&storeName=${storeName}`,
 			tokenConfig(getState)
 		)
 		.then((res) => {
@@ -204,7 +212,11 @@ export const loadCart = () => (dispatch, getState) => {
 		.catch((err) => {
 			console.log("getinfo error", err);
 			dispatch(
-				returnErrors(err.response.data, err.response.status, "CART_NOT_LOADED")
+				returnErrors(
+					err.response.data,
+					err.response.status,
+					"CART_NOT_LOADED"
+				)
 			);
 		});
 };
@@ -255,7 +267,11 @@ export const removeFromCart = (productId) => (dispatch, getState) => {
 			return res;
 		})
 		.catch((err) => {
-			returnErrors(err.response.data, err.response.status, "REMOVE_CART_ERROR");
+			returnErrors(
+				err.response.data,
+				err.response.status,
+				"REMOVE_CART_ERROR"
+			);
 		});
 
 	//	console.log("cartDetailDAta", req);
@@ -304,39 +320,28 @@ export const paymentSuccess = (payment, cartDetail) => (dispatch, getState) => {
 		});
 };
 
-
-
-
-
-
 export const loadStore = (storeName) => (dispatch) => {
-	console.log('this is from redux', storeName);
+	console.log("this is from redux", storeName);
 	dispatch({
-				type: LOAD_STORE,
-				payload: storeName, 
-			})
+		type: LOAD_STORE,
+		payload: storeName,
+	});
 	//headers
 	const config = {
 		"Content-type": "application/json",
 	};
 
 	//convert js object to json
-//	//this stringfy doesn't work fires up error
-//	const body = JSON.stringify({ username, email, password });
-//	//console.log(body);
-//	//now we make a req to the server
-//	console.log("this executed woow");
+	//	//this stringfy doesn't work fires up error
+	//	const body = JSON.stringify({ username, email, password });
+	//	//console.log(body);
+	//	//now we make a req to the server
+	//	console.log("this executed woow");
 	axios
-		.post(
-			`${USER_SERVER}/store/connectStore`,
-			storeName
-			,
-			config
-		)
+		.post(`${USER_SERVER}/store/connectStore`, storeName, config)
 		.then((res) => {
 			console.log("StoreSent");
 			//console.log(res.data);
-		
 		})
 		.catch((err) => {
 			console.log(err.response);
@@ -348,8 +353,5 @@ export const loadStore = (storeName) => (dispatch) => {
 					"storeNOTsent"
 				)
 			);
-			
 		});
 };
-
-

@@ -1,41 +1,40 @@
 const router = require("express").Router();
 const multer = require("multer");
 //const {  Product } = require("../models/product");
-const { productModel}  = require("../models/product");
+const { productModel } = require("../models/product");
 //const product = require("../models/product");
-const stores = [
-	{ email: "user1@gmail.com", name: "manish" },
-	{ email: "user2@gmail.com", name: "sanket" },
-];
-
-	
-let Product = '';
-let db = 'sanket';
-
-
-//console.log(productModel);
-stores.every( (element, index) => {
-	if(element.name == db) {
-		Product = productModel[index];
-		return false;
-	}
-	else return true;
-});
+//const stores = [
+//	{ email: "user1@gmail.com", name: "manish" },
+//	{ email: "user2@gmail.com", name: "sanket" },
+//];
+//
+//
+//let Product = '';
+//let db = 'sanket';
+//
+//
+////console.log(productModel);
+//stores.every( (element, index) => {
+//	if(element.name == db) {
+//		Product = productModel[index];
+//		return false;
+//	}
+//	else return true;
+//});
 
 router.route("/pr").post(async (req, res) => {
 	//loginValidation
 
-
 	try {
-		res.status(200).send(productModel);	
+		res.status(200).send(productModel);
 	} catch (err) {
 		res.status(400).send(err);
 	}
 });
-	
-	
 
 const auth = require("../middlewares/auth");
+const connDB = require("../middlewares/connectDB");
+
 var storage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		cb(null, "../uploads/");
@@ -73,9 +72,9 @@ router.post("/uploadImage", (req, res) => {
 	});
 });
 
-router.post("/uploadProduct", (req, res) => {
+router.post("/uploadProduct", connDB, (req, res) => {
 	//console.log(req.user);
-	const product = new Product(req.body);
+	const product = new req.Product(req.body);
 	product.save((err) => {
 		if (err) {
 			console.log(err);
@@ -98,9 +97,7 @@ router.post("/uploadProduct", (req, res) => {
 // 	});
 // });
 
-
-
-router.route("/getProducts").post((req, res) => {
+router.route("/getProducts").post(connDB, (req, res) => {
 	let order = req.body.order ? req.body.order : "desc";
 	let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
 	let skip = parseInt(req.body.skip);
@@ -109,7 +106,10 @@ router.route("/getProducts").post((req, res) => {
 	let term = req.body.searchItem;
 	let findArgs = {};
 
+	const Product = req.Product;
+
 	for (let key in req.body.filters) {
+
 		if (req.body.filters[key].length > 0) {
 			//console.log(req.body.filters[key])
 			if (key == "price") {
@@ -125,7 +125,6 @@ router.route("/getProducts").post((req, res) => {
 	}
 	// console.log(req.body.filters["continents"])
 	console.log(findArgs);
-
 	if (term) {
 		Product.find(findArgs)
 			.find({ $text: { $search: term } })
@@ -139,7 +138,11 @@ router.route("/getProducts").post((req, res) => {
 
 				return res
 					.status(200)
-					.json({ success: true, products, postSize: products.length });
+					.json({
+						success: true,
+						products,
+						postSize: products.length,
+					});
 			});
 	} else {
 		Product.find(findArgs)
@@ -153,14 +156,19 @@ router.route("/getProducts").post((req, res) => {
 
 				return res
 					.status(200)
-					.json({ success: true, products, postSize: products.length });
+					.json({
+						success: true,
+						products,
+						postSize: products.length,
+					});
 			});
 	}
 });
 
 //product/product_by_id?id=${productId}&type=single
-router.route("/product_by_id").get((req, res) => {
+router.route("/product_by_id").get(connDB, (req, res) => {
 	const type = req.query.type;
+	const Product = req.Product;
 	let productIds = req.query.id;
 
 	//console.log(productIds);

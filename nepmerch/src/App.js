@@ -33,8 +33,8 @@ const Main = withRouter(({ location }) => {
 	// };
 	return (
 		<div>
-			{location.pathname !== "/users/login" &&
-				location.pathname !== "/users/register" && <Navbar />}
+			{location.pathname !== "/store/:storeName/users/login" &&
+				location.pathname !== "/store/:storeName/users/register" && <Navbar />}
 
 			<Route exact path="/" exact component={HomePage} />
 				<Route exact path="/store/:storeName" component={MainStore} />
@@ -42,20 +42,20 @@ const Main = withRouter(({ location }) => {
 			<Switch>
 				{/* <Route exact path="/edit/:id" component={EditExercise} /> */}
 				{/* <Route exact path="/create" component={CreateExercise} /> */}
-				<Route exact path="/product/upload" component={UploadProduct} />
+				<Route exact path="/store/:storeName/product/upload" component={UploadProduct} />
 				{/* <Route exact path="/user" component={CreateUser} /> */}
-				<Route exact path="/product/:productId" component={ProductPage} />
-				<Route exact path="/search/:searchValue" component={CardsWithReview} />
-				<Route exact path="/users/register" component={registerUser} />
-				<Route exact path="/users/logout" component={Logout} />
-				<Route exact path="/users/login" component={Login} />
+				<Route exact path="/store/:storeName/product/:productId" component={ProductPage} />
+				<Route exact path="/store/:storeName/search/:searchValue" component={CardsWithReview} />
+				<Route exact path="/store/:storeName/users/register" component={registerUser} />
+				<Route exact path="/store/:storeName/users/logout" component={Logout} />
+				<Route exact path="/store/:storeName/users/login" component={Login} />
 
-				<Route exact path="/users/cartPage" component={CartPage} />
+				<Route exact path="/store/:storeName/users/cartPage" component={CartPage} />
 
-				<Route exact path="/users/history" component={History} />
+				<Route exact path="/store/:storeName/users/history" component={History} />
 			</Switch>
-			{location.pathname !== "/users/login" &&
-				location.pathname !== "/users/register" && <Footer />}
+			{location.pathname !== "/store/:storeName/users/login" &&
+				location.pathname !== "/store/:storeName/users/register" && <Footer />}
 		</div>
 	);
 });

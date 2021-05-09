@@ -5,12 +5,15 @@ import { loadStore } from "../../actions/authAction";
 //import { loadUser } from "../../../actions/authAction";
 import { useDispatch } from "react-redux";
 import { USER_SERVER } from "../config";
+
+import HomePage from "../HomePage/HomePage";
 function MainStore(props) {
 	const dispatch = useDispatch();
 	console.log('yoo this is mainstore');
 	console.log (props.match.params.storeName);	
-	const storeName  = props.match.params.storeName
+	const storeName  = props.match.params.storeName;
 
+	//const storeName  = useSelector((state) => state.auth.storeName);
 	useEffect(() => {
 	dispatch(loadStore(storeName));
 	}, [storeName]);
@@ -36,8 +39,8 @@ function MainStore(props) {
 	//
 	return (
 		<div>
-		<h1> This is mainstorepage</h1>	
-		</div>
+		<HomePage />
+				</div>
 	);
 }
 

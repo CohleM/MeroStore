@@ -7,7 +7,7 @@ import Footer from "../utilities/Footer";
 function HomePage() {
 	return (
 		<div style={{ backgroundColor: "white" }}>
-			<PhotoGrid />
+			<PhotoGrid /> 
 			<Cards />
 			<CardsWithReview />
 		</div>

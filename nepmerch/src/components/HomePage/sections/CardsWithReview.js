@@ -2,6 +2,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 
+import { useSelector } from "react-redux";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -47,12 +48,19 @@ function CenteredGrid(props) {
 	const [Searchitems, setSearchitems] = useState("");
 	const searchValue = props.match.params.searchValue;
 	//useEffect is similar to  componentDidMount it executes before loading the actual page
+	//const storeName  = useSelector((state) => state.auth.storeName);
+
+	const storeName  = useSelector((state) => state.auth.storeName);
+	console.log('card with rev', storeName);
 	//const dispatch = useDispatch();
 	const getProducts = (variables) => {
+	
+
+		
 		axios
 			// `${USER_SERVER}/users/getinfo`
 			// .post("http://localhost:5000/product/getProducts", variables)
-			.post(`${USER_SERVER}/product/getProducts`, variables)
+			.post(`${USER_SERVER}/product/getProducts?storeName=${storeName}`, variables)
 			.then((response) => {
 				if (response.data.success) {
 					// console.log(variables.loadmore)
@@ -66,8 +74,12 @@ function CenteredGrid(props) {
 					alert("Failed to fetch the products");
 					console.log(response.err);
 				}
-			});
+			}).catch((error) => {
+				console.log('card with revvvvv', error);
+			})
 	};
+
+
 
 	useEffect(() => {
 		if (searchValue && searchValue.length > 0) {
@@ -88,7 +100,7 @@ function CenteredGrid(props) {
 			getProducts(variables);
 		}
 		//dispatch(loadUser());
-	}, [searchValue]);
+	}, [searchValue,storeName]);
 
 	// useEffect(() => {
 
@@ -183,7 +195,7 @@ function CenteredGrid(props) {
 							<Card className={classes.root1} elevation={0}>
 								<CardActionArea
 									style={{ outline: "none" }}
-									onClick={() => props.history.push(`/product/${item._id}`)}
+									onClick={() => props.history.push(`/store/${storeName}/product/${item._id}`)}
 								>
 									<CardMedia
 										className={classes.media}

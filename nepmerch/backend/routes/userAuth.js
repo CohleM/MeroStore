@@ -26,7 +26,7 @@ router.route("/").get(auth, (req, res) => {
 
 router.post("/sampletest", connDB, (req, res) => {
 	
-	res.send(req.body.dbid );
+	res.send(req.query.store );
 
 	console.log('This is sampleTest req', req.User);
 });
@@ -66,8 +66,10 @@ stores.every( (element, index) => {
 
 
 
-router.post("/register", async (req, res) => {
+router.post("/register",connDB, async (req, res) => {
 	console.log("this is body :", req.body);
+	const User = req.User;
+	const Product = req.Product;
 
 	const { error } = registerValidation(req.body);
 
@@ -127,8 +129,15 @@ router.post("/register", async (req, res) => {
 		.catch((err) => res.status(400).send(err));
 });
 
-router.route("/login").post(async (req, res) => {
+router.route("/login").post(connDB, async (req, res) => {
 	//loginValidation
+	//
+	//
+	const User = req.User;
+	const Product = req.Product;
+
+
+	console.log('this is from login', req.query.sample);
 	const { error } = loginValidation(req.body);
 	// if (error) return res.status(400).send(error.details[0].message);
 
@@ -172,7 +181,9 @@ router.route("/login").post(async (req, res) => {
 });
 
 //Checking if authorization works
-router.get("/getinfo", auth, async (req, res) => {
+router.get("/getinfo", auth,connDB,  async (req, res) => {
+	const User = req.User;
+	const Product = req.Product;
 	try {
 		console.log("there you go");
 		const user = await User.findById(req.user.id);
@@ -187,12 +198,17 @@ router.get("/getinfo", auth, async (req, res) => {
 });
 //http://localhost:5000/users/addToCart/product_by_id?id=${productId}
 
-router.get("/addToCart", auth, async (req, res) => {
+router.get("/addToCart", auth,connDB, async (req, res) => {
 	//console.log(req.user.id);
 	//console.log("gg", req.user.id);
 	// console.log("id", req.user.id);
 	// console.log("routeeexxx");
 	//console.log("query id", req.query.id);
+	//console.log('this is from add to card ', req.query.storeName);
+	const User = req.User;
+	const Product = req.Product;
+
+
 	await User.findOne({ _id: req.user.id })
 		.then((userInfo) => {
 			let flag = false;
@@ -243,7 +259,11 @@ router.get("/addToCart", auth, async (req, res) => {
 //removeFromCart
 //http://localhost:5000/users/removeFromCart?id=${productId}
 
-router.get("/removeFromCart", auth, async (req, res) => {
+router.get("/removeFromCart", auth,connDB, async (req, res) => {
+	const User = req.User;
+	const Product = req.Product;
+
+
 	console.log("this is DB for rm");
 	User.findOneAndUpdate(
 		{ _id: req.user.id },
@@ -273,7 +293,11 @@ router.get("/removeFromCart", auth, async (req, res) => {
 		});
 });
 
-router.post("/paymentSuccess", auth, async (req, res) => {
+router.post("/paymentSuccess", auth,connDB,  async (req, res) => {
+	const User = req.User;
+	const Product = req.Product;
+	const Payment = req.Payment;
+
 	console.log("paymentSucceeBackenddd");
 	let history = [];
 	let transactionDetails = {};

@@ -41,6 +41,11 @@ function Navbar(props) {
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(false);
 	const [anchorEl, setAnchorEl] = React.useState(null);
+
+	//const storeName  = props.match.params.storeName;
+	
+	const storeName  = useSelector((state) => state.auth.storeName);
+	console.log('this is from navbar', storeName);
 	const handleDrawerOpen = () => {
 		setOpen(true);
 	};
@@ -71,7 +76,7 @@ function Navbar(props) {
 			// props.refreshSearch(event.currentTarget.value)
 			// props.history.push(`/users/logout`);
 
-			props.history.push(`/search/${event.currentTarget.value}`);
+			props.history.push(`/store/${storeName}/search/${event.currentTarget.value}`);
 		}
 	};
 
@@ -102,7 +107,7 @@ function Navbar(props) {
 						component="button"
 						color="inherit"
 						className={classes.typ}
-						onClick={() => props.history.push("/")}
+						onClick={() => props.history.push(`/store/${storeName}`)}
 						style={{ outline: "none" }}
 					>
 						NEP MERCH
@@ -117,7 +122,7 @@ function Navbar(props) {
 							<SearchIcon style={{ fontSize: "20px" }} />
 						</div>
 						<InputBase
-							placeholder="Search items"
+							placeholder=""
 							fullWidth
 							classes={{
 								root: classes.inputRoot,
@@ -138,7 +143,7 @@ function Navbar(props) {
 									aria-label="Edit"
 									className={classes.icons}
 									style={{ outline: "none" }}
-									onClick={() => props.history.push("/users/cartPage")}
+									onClick={() => props.history.push(`/store/${storeName}/users/cartPage`)}
 								>
 									<Badge badgeContent={count} color="secondary">
 										<ShoppingCartIcon
@@ -222,19 +227,19 @@ function Navbar(props) {
 				>
 					{!isAuth ? (
 						<div>
-							<MenuItem onClick={() => props.history.push("/users/register")}>
+							<MenuItem onClick={() => props.history.push(`/store/${storeName}/users/register`)}>
 								Register
 							</MenuItem>
-							<MenuItem onClick={() => props.history.push("/users/login")}>
+							<MenuItem onClick={() => props.history.push(`/store/${storeName}/users/login`)}>
 								Login
 							</MenuItem>
 						</div>
 					) : (
 						<div>
-							<MenuItem onClick={() => props.history.push("/users/history")}>
+							<MenuItem onClick={() => props.history.push(`/store/${storeName}/users/history`)}>
 								History
 							</MenuItem>
-							<MenuItem onClick={() => props.history.push("/users/logout")}>
+							<MenuItem onClick={() => props.history.push(`/store/${storeName}/users/logout`)}>
 								Logout
 							</MenuItem>
 						</div>
