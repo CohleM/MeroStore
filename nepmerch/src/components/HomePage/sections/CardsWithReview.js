@@ -51,6 +51,8 @@ function CenteredGrid(props) {
 	//const storeName  = useSelector((state) => state.auth.storeName);
 
 	const storeName  = useSelector((state) => state.auth.storeName);
+	
+//	const storeName  = "manish";
 	console.log('card with rev', storeName);
 	//const dispatch = useDispatch();
 	const getProducts = (variables) => {

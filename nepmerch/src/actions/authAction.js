@@ -42,9 +42,13 @@ export const loadUser = () => (dispatch, getState) => {
 	// 	config.headers["x-auth-token"] = token;
 	// }
 	// axios.get takes in an object of headers
+
+	const { auth }  = getState();	
+	const storeName = auth.storeName;
+
 	axios
 		// .get("http://localhost:5000/users/getinfo", tokenConfig(getState))
-		.get(`${USER_SERVER}/users/getinfo`, tokenConfig(getState))
+		.get(`${USER_SERVER}/users/getinfo?storeName=${storeName}`, tokenConfig(getState))
 		.then((res) => {
 			dispatch({
 				type: USER_LOADED,
@@ -80,12 +84,14 @@ export const tokenConfig = (getState) => {
 };
 
 //Register user
-export const register = ({ username, email, password }) => (dispatch) => {
+export const register = ({ username, email, password }) => (dispatch, getState) => {
 	//headers
 	const config = {
 		"Content-type": "application/json",
 	};
 
+	const { auth }  = getState();	
+	const storeName = auth.storeName;
 	//convert js object to json
 	//this stringfy doesn't work fires up error
 	const body = JSON.stringify({ username, email, password });
@@ -94,7 +100,7 @@ export const register = ({ username, email, password }) => (dispatch) => {
 	console.log("this executed woow");
 	axios
 		.post(
-			`${USER_SERVER}/users/register`,
+			`${USER_SERVER}/users/register?storeName=${storeName}`,
 			{
 				name: username,
 				email: email,
@@ -130,14 +136,16 @@ export const login = ({ email, password }) => (dispatch, getState) => {
 	const config = {
 		"Content-type": "application/json",
 	};
-	const { auth }  = getState();	
+		const { auth }  = getState();	
+	const storeName = auth.storeName;
+	
 //	const storename = useSelector((state) => state.auth.storeName);
 	console.log('this is from ggg', auth.storeName );
 	//console.log('this is from gggg ', storename);
 	const sample = "test";
 	axios
 		.post(
-			`${USER_SERVER}/users/login`,
+			`${USER_SERVER}/users/login?storeName=${storeName}`,
 			{
 				email,
 				password,
@@ -201,8 +209,11 @@ export const addToCart = (productId) => (dispatch, getState) => {
 };
 
 export const loadCart = () => (dispatch, getState) => {
+	
+	const { auth }  = getState();	
+	const storeName = auth.storeName;
 	axios
-		.get(`${USER_SERVER}/users/getinfo`, tokenConfig(getState))
+		.get(`${USER_SERVER}/users/getinfo?storeName=${storeName}`, tokenConfig(getState))
 		.then((res) => {
 			dispatch({
 				type: CART_LOADING,
@@ -222,9 +233,12 @@ export const loadCart = () => (dispatch, getState) => {
 };
 
 export const getCartItems = (productIds, userCart) => (dispatch, getState) => {
+
+	const { auth }  = getState();	
+	const storeName = auth.storeName;
 	const req = axios
 		.get(
-			`${USER_SERVER}/product/product_by_id?id=${productIds}&type=array`,
+			`${USER_SERVER}/product/product_by_id?id=${productIds}&type=array&storeName=${storeName}`,
 			tokenConfig(getState)
 		)
 		.then((response) => {
@@ -251,10 +265,14 @@ export const getCartItems = (productIds, userCart) => (dispatch, getState) => {
 };
 
 export const removeFromCart = (productId) => (dispatch, getState) => {
+
+	const { auth }  = getState();	
+	const storeName = auth.storeName;
+
 	console.log("this is remove from cart");
 	const req = axios
 		.get(
-			`${USER_SERVER}/users/removeFromCart?id=${productId}`,
+			`${USER_SERVER}/users/removeFromCart?id=${productId}&storeName=${storeName}`,
 			tokenConfig(getState)
 		)
 		.then((res) => {
@@ -292,10 +310,13 @@ export const removeFromCart = (productId) => (dispatch, getState) => {
 };
 
 export const paymentSuccess = (payment, cartDetail) => (dispatch, getState) => {
+
+	const { auth }  = getState();	
+	const storeName = auth.storeName;
 	console.log("paymentSucceeFrontenddd");
 	axios
 		.post(
-			`${USER_SERVER}/users/paymentSuccess`,
+			`${USER_SERVER}/users/paymentSuccess?storeName=${storeName}`,
 			{
 				payment,
 				cartDetail,

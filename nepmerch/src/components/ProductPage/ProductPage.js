@@ -55,10 +55,11 @@ export default function ProductPage(props) {
 		setopen(false);
 	};
 
+	const storeName  = useSelector((state) => state.auth.storeName);
 	const dispatch = useDispatch();
 	useEffect(() => {
 		axios
-			.get(`${USER_SERVER}/product/product_by_id?id=${productId}&type=single`)
+			.get(`${USER_SERVER}/product/product_by_id?id=${productId}&type=single&storeName=${storeName}`)
 			.then((response) => {
 				setProduct(response.data[0]);
 				console.log("this is data", response.data[0]);
@@ -66,7 +67,7 @@ export default function ProductPage(props) {
 			.catch((err) => {
 				console.log(err);
 			});
-	}, []);
+	}, [ storeName]);
 
 	// useEffect(() => {
 	// 	window.scrollTo({ top: 0, behavior: "smooth" });
