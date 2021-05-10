@@ -58,7 +58,7 @@ function CenteredGrid(props) {
 	const getProducts = (variables) => {
 	
 
-		
+	if(storeName ) { 		
 		axios
 			// `${USER_SERVER}/users/getinfo`
 			// .post("http://localhost:5000/product/getProducts", variables)
@@ -79,6 +79,8 @@ function CenteredGrid(props) {
 			}).catch((error) => {
 				console.log('card with revvvvv', error);
 			})
+
+	}
 	};
 
 

@@ -4,6 +4,8 @@ require("dotenv").config();
 const stores = [
 	{ email: "user1@gmail.com", name: "manish" },
 	{ email: "user2@gmail.com", name: "sanket" },
+
+	{ email: "user3@gmail.com", name: "userInformation" },
 ];
 
 let connectionsArr = [];

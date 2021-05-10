@@ -1,10 +1,16 @@
 const jwt = require("jsonwebtoken");
 
 function auth(req, res, next) {
+	try {
+
+
+
+
 	const token = req.header("x-auth-token");
 
-	if (!token) return res.sendStatus(401).json({ msg: "no token" });
-	try {
+	if (!token) return res.status(401).json({ msg: "no token" });
+
+	console.log('this is try');
 		const decodedValue = jwt.verify(token, "SEcretKey");
 
 		//req.user looks like this
@@ -18,6 +24,8 @@ function auth(req, res, next) {
 		//console.log(req.user);
 		next();
 	} catch (e) {
+
+	console.log( 'this is from catch error ', e);
 		res.status(400).json({ msg: "token not valid" });
 	}
 }

@@ -14,6 +14,8 @@ function connDB(req, res, next) {
 		const stores = [
 			{ email: "user1@gmail.com", name: "manish" },
 			{ email: "user2@gmail.com", name: "sanket" },
+
+			{ email: "user3@gmail.com", name: "userInformation" },
 		];
 
 	//	let User = "";

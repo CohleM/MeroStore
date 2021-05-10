@@ -45,7 +45,7 @@ export default function (state = initialState, action) {
 		case LOAD_STORE:
 			return {
 				...state,
-				storeName:action.payload ,
+				storeName: action.payload,
 			};
 
 		case USER_LOADED:
@@ -67,6 +67,14 @@ export default function (state = initialState, action) {
 			};
 
 		case AUTH_ERROR:
+			return {
+				...state,
+
+				isAuthenticated: false,
+				isLoading: false,
+				user: { ...state.user, cart: [] },
+				cartDetail: null,
+			};
 		case LOGIN_FAIL:
 		case LOGOUT_SUCCESS:
 		case REGISTER_FAIL:
