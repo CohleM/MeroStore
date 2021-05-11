@@ -3,6 +3,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { withRouter } from "react-router";
 import registerUser from "./components/users/registerUser";
+
+import RegisterStore from "./components/users/RegisterStore";
 import Navbar from "./components/Navbar/navbar.component";
 // import ExerciseList from "./components/exercises-list.component";
 // import EditExercise from "./components/edit-exercise.component";
@@ -34,12 +36,17 @@ const Main = withRouter(({ location }) => {
 	return (
 		<div>
 			{location.pathname !== "/store/:storeName/users/login" &&
-				location.pathname !== "/store/:storeName/users/register" && <Navbar />}
+				location.pathname !== "/store/:storeName/users/register" &&
 
-			<Route exact path="/" exact component={HomePage} />
+		location.pathname !== "/" &&
+
+				<Navbar />}
+
+			
 				<Route exact path="/store/:storeName" component={MainStore} />
 			<br />
 			<Switch>
+		<Route exact path="/" exact component={RegisterStore} />
 				{/* <Route exact path="/edit/:id" component={EditExercise} /> */}
 				{/* <Route exact path="/create" component={CreateExercise} /> */}
 				<Route exact path="/store/:storeName/product/upload" component={UploadProduct} />
@@ -55,7 +62,11 @@ const Main = withRouter(({ location }) => {
 				<Route exact path="/store/:storeName/users/history" component={History} />
 			</Switch>
 			{location.pathname !== "/store/:storeName/users/login" &&
-				location.pathname !== "/store/:storeName/users/register" && <Footer />}
+				location.pathname !== "/store/:storeName/users/register" 
+		&&
+
+		location.pathname !== "/" 
+				&& <Footer />}
 		</div>
 	);
 });
