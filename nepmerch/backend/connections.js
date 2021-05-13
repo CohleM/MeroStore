@@ -4,6 +4,12 @@ const { Store  } = require("./models/store");
 require("dotenv").config();
 
 
+let connectionsArr = [];
+let  stores = [
+];
+
+
+
 
 
 async function getStore () {
@@ -11,37 +17,46 @@ async function getStore () {
 	let ss; 
 	await Store.find({}).then((store) => {
 	store.forEach (( element, index  ) => {
+	stores.push(element);
 
-		console.log(' this is' , index, ' and ', element );
+});
+
+
 
 
 	} );
+
+
 	
-	});
+stores.forEach((element) => {
+		uri = process.env.ATLAS_URI1 + element.name;
+
+		conn = makeNewConnection(uri);
+		connectionsArr.push(conn);
+});
+
+
 
 return ss;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 let ss = getStore();
 
 
-console.log('this is yolooooo', ss);
 
-const stores = [
-	{ email: "user1@gmail.com", name: "manish" },
-	{ email: "user2@gmail.com", name: "sanket" },
-
-	{ email: "user3@gmail.com", name: "userInformation" },
-];
-
-let connectionsArr = [];
-
-stores.forEach((element) => {
-	uri = process.env.ATLAS_URI1 + element.name;
-
-	conn = makeNewConnection(uri);
-	connectionsArr.push(conn);
-});
 
 const uri1 = process.env.ATLAS_URI1;
 const uri2 = process.env.ATLAS_URI2;

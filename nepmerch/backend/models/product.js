@@ -63,11 +63,21 @@ productSchema.index(
 //
 //
 let productModel = [];
-connectionsArr.forEach((element, index) => {
+
+async function makeconn() {
+
+await connectionsArr.forEach((element, index) => {
+
+	console.log('modelgggg', element);
 	productModel.push(element.model("Product" + (index), productSchema));
+
 });
 
 
+console.log('connectionsArr', connectionsArr);
 console.log('this is productmodel', productModel);
+}
+
+makeconn();
 //module.exports = User;
 module.exports =  { productModel };
