@@ -14,6 +14,7 @@ import {
 	REMOVE_FROM_CART,
 	PAYMENT_SUCCESS,
 	LOAD_STORE,
+	STORE_CREATED,
 } from "./types";
 import { USER_SERVER } from "../components/config";
 import axios from "axios";
@@ -84,6 +85,52 @@ export const tokenConfig = (getState) => {
 };
 
 //Register user
+export const registerStore  = ({ storeID , email, password }) => (dispatch, getState) => {
+	//headers
+	const config = {
+		"Content-type": "application/json",
+	};
+
+	const { auth }  = getState();	
+
+
+	console.log('registerStore Executed');
+	//const storeName = auth.storeName;
+	//const body = JSON.stringify({ username, email, password });
+	axios
+		.post(
+			`${USER_SERVER}/store/register`,
+			{
+				name: storeID,
+				email: email,
+				password: password,
+			},
+			config
+		)
+		.then((res) => {
+			console.log("this is registerStore ");
+			//console.log(res.data);
+			dispatch({
+				type: STORE_CREATED,
+				payload: res.data,
+			});
+		})
+		.catch((err) => {
+			console.log(err.response);
+			dispatch(
+				returnErrors(
+					err.response.data.message,
+					err.response.data.type,
+					err.response.status,
+					"STORE REGISTRATION FAILED"
+				)
+			);
+			dispatch({
+				type: REGISTER_FAIL,
+			});
+		});
+};
+
 export const register = ({ username, email, password }) => (dispatch, getState) => {
 	//headers
 	const config = {
@@ -351,28 +398,4 @@ export const loadStore = (storeName) => (dispatch) => {
 	const config = {
 		"Content-type": "application/json",
 	};
-
-	//convert js object to json
-	//	//this stringfy doesn't work fires up error
-	//	const body = JSON.stringify({ username, email, password });
-	//	//console.log(body);
-	//	//now we make a req to the server
-	//	console.log("this executed woow");
-	axios
-		.post(`${USER_SERVER}/store/connectStore`, storeName, config)
-		.then((res) => {
-			console.log("StoreSent");
-			//console.log(res.data);
-		})
-		.catch((err) => {
-			console.log(err.response);
-			dispatch(
-				returnErrors(
-					err.response.data.message,
-					err.response.data.type,
-					err.response.status,
-					"storeNOTsent"
-				)
-			);
-		});
 };

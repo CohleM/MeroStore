@@ -3,7 +3,7 @@ import { Form, Input, Button, Checkbox } from "antd";
 import PropTypes from "prop-types";
 import { connect, useDispatch, useSelector } from "react-redux";
 
-import { register } from "../../actions/authAction";
+import { register,registerStore } from "../../actions/authAction";
 
 import TextField from "@material-ui/core/TextField";
 import { useStyles } from "./Style";
@@ -42,9 +42,13 @@ function RegisterUser(props) {
 	const [usernameError, setusernameError] = useState("");
 	const dispatch = useDispatch();
 	//very nice mofo saved me some time yollooo
+
+	const storeID  = useSelector((state) => state.auth.storeName);
+
+
 	useEffect(() => {
-		if (isAuthenticated) props.history.push("/");
-	}, [isAuthenticated]);
+		if (storeID) props.history.push(`/store/${storeID}`);
+	}, [storeID]);
 
 	useEffect(() => {
 		if (checkError == "email") {
@@ -55,7 +59,7 @@ function RegisterUser(props) {
 			setpasswordError(errorMessage);
 			setemailError("");
 			setusernameError("");
-		} else if (checkError == "name") {
+		} else if (checkError == "storename") {
 			setusernameError(errorMessage);
 			setemailError("");
 			setpasswordError("");
@@ -65,15 +69,17 @@ function RegisterUser(props) {
 	const handleOnSubmit = (e) => {
 		e.preventDefault();
 		console.log(storename, email, password);
-		const newUser = {
-			storename,
+
+		const storeID = storename;
+		const newStore  = {
+			storeID ,
 			email,
 			password,
 		};
 
 		// this is register actioni
 
-		dispatch(register(newUser));
+		dispatch(registerStore(newStore));
 
 		if (!checkError) {
 			setusernameError("");

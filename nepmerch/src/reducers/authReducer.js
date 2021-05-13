@@ -14,6 +14,7 @@ import {
 	PAYMENT_SUCCESS,
 	LOAD_USER,
 	LOAD_STORE,
+	STORE_CREATED,
 } from "../actions/types";
 
 const initialState = {
@@ -55,8 +56,19 @@ export default function (state = initialState, action) {
 				isLoading: false,
 				user: action.payload,
 			};
+
+		case STORE_CREATED:
+	
+
+			return {
+				...state,
+				...action.payload,
+				storeName: action.payload.store.name,
+			
+			};		
 		case LOGIN_SUCCESS:
 		case REGISTER_SUCCESS:
+
 			localStorage.setItem("token", action.payload.token);
 			return {
 				...state,
