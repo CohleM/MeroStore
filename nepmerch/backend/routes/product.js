@@ -107,7 +107,7 @@ router.route("/getProducts").post(connDB, (req, res) => {
 	let findArgs = {};
 
 	const Product = req.Product;
-
+	console.log('this is product yohooo', Product);
 	for (let key in req.body.filters) {
 
 		if (req.body.filters[key].length > 0) {

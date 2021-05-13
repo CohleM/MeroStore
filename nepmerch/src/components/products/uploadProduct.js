@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import FileUpload from "../utilities/FileUpload";
 import axios from "axios";
 
+import { useSelector } from "react-redux";
 const Continents = [
 	{ key: 1, value: "Africa" },
 	{ key: 2, value: "Europe" },
@@ -18,6 +19,11 @@ function UploadProduct(props) {
 	const [PriceValue, setPriceValue] = useState(0);
 	const [ContinentValue, setContinentValue] = useState("");
 	const [Images, setImages] = useState([]);
+
+//	const storeName  = useSelector((state) => state.auth.storeName);
+
+	const storeName  = props.match.params.storeName;
+	console.log('this is from uploadProduct', storeName);
 
 	const onTitleChange = (event) => {
 		setTitleValue(event.currentTarget.value);
@@ -47,7 +53,7 @@ function UploadProduct(props) {
 			continents: ContinentValue,
 		};
 		axios
-			.post("http://localhost:5000/product/uploadProduct", variables)
+			.post(`http://localhost:5000/product/uploadProduct?storeName=${storeName}`, variables)
 			.then((response) => {
 				if (response.data.success) {
 					console.log("done");

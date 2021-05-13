@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const { Store  } = require("./models/store");
 require("dotenv").config();
 
+let connectionsArr = [];
 
 
 
@@ -12,39 +13,27 @@ async function getStore () {
 	await Store.find({}).then((store) => {
 	store.forEach (( element, index  ) => {
 
-		console.log(' this is' , index, ' and ', element );
+	console.log(' this is' , index, ' and ', element );
+	uri = process.env.ATLAS_URI1 + element.name;
 
+	conn = makeNewConnection(uri);
+	connectionsArr.push(conn);
 
 	} );
 	
 	});
 
-return ss;
+
+	//console.log('connectionArr', connectionsArr);
+
 }
 
-let ss = getStore();
+
+ getStore();
 
 
-console.log('this is yolooooo', ss);
 
-const stores = [
-	{ email: "user1@gmail.com", name: "manish" },
-	{ email: "user2@gmail.com", name: "sanket" },
 
-	{ email: "user3@gmail.com", name: "userInformation" },
-];
-
-let connectionsArr = [];
-
-stores.forEach((element) => {
-	uri = process.env.ATLAS_URI1 + element.name;
-
-	conn = makeNewConnection(uri);
-	connectionsArr.push(conn);
-});
-
-const uri1 = process.env.ATLAS_URI1;
-const uri2 = process.env.ATLAS_URI2;
 
 function makeNewConnection(uri) {
 	const db = mongoose.createConnection(uri, {
@@ -80,15 +69,7 @@ function makeNewConnection(uri) {
 	return db;
 }
 
-const userConnection = makeNewConnection(uri1);
-const newConnection = makeNewConnection(uri2);
 
-//module.exports = {
-//	userConnection,
-//	newConnection,
-//
-//};
-//
 
 module.exports = {
 	connectionsArr,

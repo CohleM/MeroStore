@@ -2,8 +2,9 @@ const { paymentModel  } = require("../models/payment");
 const { userModel }  = require("../models/user");
 const { productModel}  = require("../models/product");
 
+const { Store  } = require("../models/store");
 
-function connDB(req, res, next) {
+async function connDB(req, res, next) {
 
 	console.log('this is from connDB ', req.query.storeName);
 	//console.log('this is connDB', req.body.dbid);
@@ -23,20 +24,33 @@ function connDB(req, res, next) {
 	//	let Payment = "";
 		//let db = "manish"; 
 		let db = req.query.storeName;
-		
 
-		//console.log(productModel);
-		stores.every((element, index) => {
-			if (element.name == db) {
+
+
+		await Store.find({}).then((store) => {
+	store.forEach (( element, index  ) => {
+		if(element.name == db) {
+
+		console.log('checking', element.name , ' > index ', index , 'db: ', db );
 				req.User = userModel[index];
 				req.Product = productModel[index];
 				req.Payment = paymentModel[index];
 
-				return false;
-			} else return true;
-		});
+
+
+		}
+
+	} );
+	
+	})
+		
+
+		//console.log(productModel);
+		
 		next();
 	} catch (e) {
+
+		console.log('this is from connectDB' , e);
 		res.status(400).json({ msg: "connection problem" });
 	}
 }
