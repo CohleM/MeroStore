@@ -1,6 +1,32 @@
 const mongoose = require("mongoose");
 
+const { Store  } = require("./models/store");
 require("dotenv").config();
+
+
+
+
+async function getStore () {
+
+	let ss; 
+	await Store.find({}).then((store) => {
+	store.forEach (( element, index  ) => {
+
+		console.log(' this is' , index, ' and ', element );
+
+
+	} );
+	
+	});
+
+return ss;
+}
+
+let ss = getStore();
+
+
+console.log('this is yolooooo', ss);
+
 const stores = [
 	{ email: "user1@gmail.com", name: "manish" },
 	{ email: "user2@gmail.com", name: "sanket" },
