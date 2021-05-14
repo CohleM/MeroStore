@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 //const { userConnection } = require("../connections");
 
-const { connectionsArr } = require('../connections');
+const { connArr } = require('../connections');
 const productSchema = mongoose.Schema(
 	{
 		writer: {
@@ -62,12 +62,20 @@ productSchema.index(
 //module.exports = { Product };
 //
 //
-let productModel = [];
-connectionsArr.forEach((element, index) => {
-	productModel.push(element.model("Product" + (index), productSchema));
-});
+//
+//
+async function productModel() {
+	let product  = [];
+	await connArr().then((res) => {
+		res.forEach((element, index) => {
+			product.push(element.model("Product" + index, productSchema));
+		});
+	});
+	console.log(product);
+	return product;
+}
 
-
-console.log('this is productmodel', productModel);
 //module.exports = User;
-module.exports =  { productModel };
+module.exports = { productModel };
+
+

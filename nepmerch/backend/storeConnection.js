@@ -2,10 +2,13 @@ const mongoose = require("mongoose");
 
 require("dotenv").config();
 
-	uri = process.env.ATLAS_URI1 + "storesDB" 
+async function createStoreConnection() {
+	let uri = await process.env.ATLAS_URI1 + "storesDB";
 
-	const storeConnection  = makeNewConnection(uri);
+	const storeConnection = await makeNewConnection(uri);
 
+	return storeConnection;
+}
 
 function makeNewConnection(uri) {
 	const db = mongoose.createConnection(uri, {
@@ -42,5 +45,5 @@ function makeNewConnection(uri) {
 }
 
 module.exports = {
-	storeConnection,
+	createStoreConnection,
 };

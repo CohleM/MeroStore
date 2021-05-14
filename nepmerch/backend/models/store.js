@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { storeConnection } = require("../storeConnection");
+const { createStoreConnection } = require("../storeConnection");
 const { array } = require("prop-types");
 const storeSchema = new mongoose.Schema({
 	name: {
@@ -22,10 +22,18 @@ const storeSchema = new mongoose.Schema({
 		min: 6,
 		max: 1024,
 	},
-
 });
 
-const Store  = storeConnection.model('Store',storeSchema)
+console.log("createStoreconn", typeof createStoreConnection);
+
+async function storeModel() {
+	let Store;
+	await createStoreConnection().then((res) => {
+		Store = res.model("Store", storeSchema);
+		console.log("this is store model ", Store);
+	});
+	return Store;
+}
 
 //module.exports = User;
-module.exports = { Store };
+module.exports = { storeModel };

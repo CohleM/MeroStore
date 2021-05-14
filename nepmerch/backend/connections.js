@@ -1,47 +1,67 @@
 const mongoose = require("mongoose");
 
-const { Store  } = require("./models/store");
+const { storeModel } = require("./models/store");
 require("dotenv").config();
 
+//
+//async function getStore() {
+//	let ss;
+//	await storeModel().then((res) => {
+//		 res.find({}).then((store) => {
+//			store.forEach((element, index) => {
+//				console.log(" this is", index, " and ", element);
+//			});
+//
+//			return store;
+//		});
+//	});
+//
+//}
+//
+async function getStore() {
+	let ss;
+	const sModel = await storeModel();
 
+	const storeList = await sModel.find({});
 
-
-async function getStore () {
-
-	let ss; 
-	await Store.find({}).then((store) => {
-	store.forEach (( element, index  ) => {
-
-		console.log(' this is' , index, ' and ', element );
-
-
-	} );
-	
-	});
-
-return ss;
+	console.log("storeList ", storeList);
+	return storeList;
 }
 
-let ss = getStore();
+async function connArr () {
+	// getStore().then( res => {
+	//res.forEach((element) => {
+
+	//console.log('element name ', element.name);
+	//});
+	//}
+	// );
+	//
+	const storeIDs = await getStore();
+
+	let connectionsArr = [];
+
+	await storeIDs.forEach((element) => {
+		uri = process.env.ATLAS_URI1 + element.name;
+
+		conn = makeNewConnection(uri);
+		connectionsArr.push(conn);
+	});
+
+	return connectionsArr;
+}
 
 
-console.log('this is yolooooo', ss);
-
+//getStore().then((res) => {
+//	console.log("this is from getStore promise", res);
+//});
+//
 const stores = [
 	{ email: "user1@gmail.com", name: "manish" },
 	{ email: "user2@gmail.com", name: "sanket" },
 
 	{ email: "user3@gmail.com", name: "userInformation" },
 ];
-
-let connectionsArr = [];
-
-stores.forEach((element) => {
-	uri = process.env.ATLAS_URI1 + element.name;
-
-	conn = makeNewConnection(uri);
-	connectionsArr.push(conn);
-});
 
 const uri1 = process.env.ATLAS_URI1;
 const uri2 = process.env.ATLAS_URI2;
@@ -91,5 +111,6 @@ const newConnection = makeNewConnection(uri2);
 //
 
 module.exports = {
-	connectionsArr,
+	
+connArr,
 };

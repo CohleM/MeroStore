@@ -1,6 +1,6 @@
 //const conn1 = require('../server.js');
 const mongoose = require("mongoose");
-const { connectionsArr } = require("../connections");
+const { connArr } = require("../connections");
 //const {userConnection, newConnection} = require('../DB/connections');
 const { array } = require("prop-types");
 const userSchema = new mongoose.Schema({
@@ -39,9 +39,21 @@ const userSchema = new mongoose.Schema({
 });
 
 //const User  = newConnection.model('User',userSchema)
-let userModel = [];
-connectionsArr.forEach((element, index) => {
-	userModel.push(element.model("User" + index, userSchema));
-});
+
+
+
+
+
+async function userModel() {
+	let user  = [];
+	await connArr().then((res) => {
+		res.forEach((element, index) => {
+			user.push(element.model("User" + index, userSchema));
+		});
+	});
+
+	return user;
+}
+
 //module.exports = User;
 module.exports = { userModel };
