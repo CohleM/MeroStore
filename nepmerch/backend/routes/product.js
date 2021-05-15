@@ -75,7 +75,9 @@ router.post("/uploadImage", (req, res) => {
 router.post("/uploadProduct", connDB, (req, res) => {
 	//console.log(req.user);
 	const product = new req.Product(req.body);
-	product.save((err) => {
+	product.save((err,prod) => {
+
+		console.log('uploadProduct', prod);
 		if (err) {
 			console.log(err);
 			return res.status(400).json({ success: false, err });

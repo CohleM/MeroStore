@@ -11,7 +11,7 @@ async function getStore() {
 
 	const storeList = await sModel.find({});
 
-	console.log("storeList ", storeList);
+//	console.log("storeList ", storeList);
 	return storeList;
 }
 

@@ -40,10 +40,14 @@ function RegisterUser(props) {
 	const [passwordError, setpasswordError] = useState("");
 
 	const [usernameError, setusernameError] = useState("");
+
+	const storeName  = props.match.params.storeName;
+
+	console.log('storeName hehe', storeName);
 	const dispatch = useDispatch();
 	//very nice mofo saved me some time yollooo
 	useEffect(() => {
-		if (isAuthenticated) props.history.push("/");
+		if (isAuthenticated) props.history.push(`/store/${storeName}`);
 	}, [isAuthenticated]);
 
 	useEffect(() => {
@@ -71,7 +75,6 @@ function RegisterUser(props) {
 			password,
 		};
 
-		// this is register actioni
 
 		dispatch(register(newUser));
 
@@ -83,17 +86,7 @@ function RegisterUser(props) {
 	};
 
 	return (
-		// <div>
-		// 	<Form>
-		// 		<label>Username</label>{" "}
-		// 		<Input onChange={(e) => setusername(e.target.value)} />
-		// 		<label>email</label>{" "}
-		// 		<Input onChange={(e) => setemail(e.target.value)} />
-		// 		<label>password</label>{" "}
-		// 		<Input onChange={(e) => setpassword(e.target.value)} type="password" />
-		// 		<Button onClick={handleOnSubmit}>Submit </Button>
-		// 	</Form>
-		// </div>
+		
 
 		<div>
 			<div className={classes.root1}>
@@ -182,7 +175,7 @@ function RegisterUser(props) {
 										color="textPrimary"
 										style={{ outline: "none" }}
 										onClick={() =>
-											props.history.push("/users/login")
+											props.history.push(`/store/${storeName}/users/login`)
 										}
 									>
 										{" "}

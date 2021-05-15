@@ -18,6 +18,8 @@ function UploadProduct(props) {
 	const [PriceValue, setPriceValue] = useState(0);
 	const [ContinentValue, setContinentValue] = useState("");
 	const [Images, setImages] = useState([]);
+	
+	const storeName  = props.match.params.storeName;
 
 	const onTitleChange = (event) => {
 		setTitleValue(event.currentTarget.value);
@@ -47,12 +49,12 @@ function UploadProduct(props) {
 			continents: ContinentValue,
 		};
 		axios
-			.post("http://localhost:5000/product/uploadProduct", variables)
+			.post(`http://localhost:5000/product/uploadProduct?storeName=${storeName}`, variables)
 			.then((response) => {
 				if (response.data.success) {
 					console.log("done");
 					alert("Product uploaded successfully");
-					window.location = "/";
+					window.location = `/store/${storeName}`;
 				} else {
 					console.log("not done");
 					alert("Failed to Upload ");

@@ -32,6 +32,9 @@ async function storeModel() {
 		Store = res.model("Store", storeSchema);
 		console.log("this is store model ", Store);
 	});
+
+
+	//const storeList = await sModel.find({});
 	return Store;
 }
 
