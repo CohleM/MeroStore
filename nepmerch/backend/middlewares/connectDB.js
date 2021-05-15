@@ -21,7 +21,7 @@ function cDB() {
 		//so this is where we need to add something
 		//
 		const stores = dbModule.db; 
-		const userM =  paymentModel;
+		const userM =  userModel;
 		const productM =  productModel;
 		const paymentM  =  paymentModel;
 //		const stores = [

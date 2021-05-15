@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const multer = require("multer");
-const { Store } = require("../models/store");
+const { dbModule } = require("../models/store");
 
 const bcrypt = require("bcryptjs");
 
@@ -30,7 +30,7 @@ router.post("/register", async (req, res) => {
 	//	if (error) return res.status(400).send(error.details[0].message);
 
 	//checkIf email already exists
-	const emailExists = await Store.findOne({ email: req.body.email });
+	const emailExists = await dbModule.store.findOne({ email: req.body.email });
 	if (emailExists) { 
 		return res
 			.status(400)
@@ -38,7 +38,7 @@ router.post("/register", async (req, res) => {
 
 	}
 
-	const storeExists = await Store.findOne({ name : req.body.name });
+	const storeExists = await dbModule.store.findOne({ name : req.body.name });
 	if (storeExists) { 
 		return res
 			.status(400)
@@ -51,7 +51,7 @@ router.post("/register", async (req, res) => {
 	const salt = await bcrypt.genSaltSync(10);
 	const hashPassword = await bcrypt.hashSync(req.body.password, salt);
 
-	const store  = new Store({
+	const store  = new dbModule.store({
 		name: req.body.name,
 		email: req.body.email,
 		password: hashPassword,
