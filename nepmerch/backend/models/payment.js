@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const { connArr } = require("../connections");
+const { connectionsArr } = require("../connections");
 const PaymentSchema = mongoose.Schema(
 	{
 		user: {
@@ -29,16 +29,23 @@ const PaymentSchema = mongoose.Schema(
 
 //module.exports = User;
 
-async function paymentModel() {
-	let payment = [];
-	await connArr().then((res) => {
-		res.forEach((element, index) => {
-			payment.push(element.model("Payment" + index, PaymentSchema));
-		});
-	});
 
-	return payment;
-}
+let paymentModel  = [];
+connectionsArr.forEach((element, index) => {
+	paymentModel.push(element.model("Payment" + index, PaymentSchema));
+});
 
+
+//async function paymentModel() {
+//	let payment = [];
+//	await connArr().then((res) => {
+//		res.forEach((element, index) => {
+//			payment.push(element.model("Payment" + index, PaymentSchema));
+//		});
+//	});
+//
+//	return payment;
+//}
+//
 //module.exports = User;
 module.exports = { paymentModel };

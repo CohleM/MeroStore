@@ -1,34 +1,11 @@
 const mongoose = require("mongoose");
 
-const { storeModel } = require("./models/store");
+const { dbModule } = require("./models/store");
 require("dotenv").config();
 
-//
-//async function getStore() {
-//	let ss;
-//	await storeModel().then((res) => {
-//		 res.find({}).then((store) => {
-//			store.forEach((element, index) => {
-//				console.log(" this is", index, " and ", element);
-//			});
-//
-//			return store;
-//		});
-//	});
-//
-//}
-//
-async function getStore() {
-	let ss;
-	const sModel = await storeModel();
 
-	const storeList = await sModel.find({});
 
-//	console.log("storeList ", storeList);
-	return storeList;
-}
 
-async function connArr () {
 	// getStore().then( res => {
 	//res.forEach((element) => {
 
@@ -37,19 +14,18 @@ async function connArr () {
 	//}
 	// );
 	//
-	const storeIDs = await getStore();
+//console.log('from connections', dbModule.db);	
 
 	let connectionsArr = [];
 
-	await storeIDs.forEach((element) => {
+	 dbModule.db.forEach((element) => {
 		uri = process.env.ATLAS_URI1 + element.name;
 
 		conn = makeNewConnection(uri);
 		connectionsArr.push(conn);
 	});
 
-	return connectionsArr;
-}
+
 
 function makeNewConnection(uri) {
 	const db = mongoose.createConnection(uri, {
@@ -85,6 +61,6 @@ function makeNewConnection(uri) {
 	return db;
 }
 module.exports = {
-	
-connArr,
+	connectionsArr
+,
 };

@@ -3,30 +3,27 @@ const { userModel }  = require("../models/user");
 const { productModel}  = require("../models/product");
 
 
-const { storeModel } = require("../models/store");
+const { dbModule  } = require("../models/store");
 
-async function getStore() {
-	let ss;
-	const sModel = await storeModel();
 
-	const storeList = await sModel.find({});
+function cDB() {
 
-//	console.log("storeList ", storeList);
-	return storeList;
+	console.log('dbModule connectDB', dbModule.db);
+
 }
 
+ function connDB(req, res, next) {
 
-async function connDB(req, res, next) {
 
-	console.log('this is from connDB ', req.query.storeName);
+	//console.log('this is from connDB ', req.query.storeName);
 
 	try {
 		//so this is where we need to add something
 		//
-		const stores = await getStore();	
-		const userM = await paymentModel();
-		const productM = await productModel();
-		const paymentM  = await paymentModel();
+		const stores = dbModule.db; 
+		const userM =  paymentModel;
+		const productM =  productModel;
+		const paymentM  =  paymentModel;
 //		const stores = [
 //			{ email: "user1@gmail.com", name: "manish" },
 //			{ email: "user2@gmail.com", name: "sanket" },

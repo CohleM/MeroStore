@@ -33,10 +33,14 @@ async function storeModel() {
 		console.log("this is store model ", Store);
 	});
 
-
-	//const storeList = await sModel.find({});
-	return Store;
+	const storeList = await Store.find({});
+	console.log('storeList', storeList);	
+	return storeList;
 }
 
+const dbModule = { db: null };
+
+dbModule.promise = storeModel().then(val => dbModule.db = val)
+
 //module.exports = User;
-module.exports = { storeModel };
+module.exports = { dbModule };
