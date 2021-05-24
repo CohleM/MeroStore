@@ -20,27 +20,16 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-function createData(Product, Status, Inventory, Type, Vendor) {
-	return { Product, Status, Inventory, Type, Vendor };
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import { USER_SERVER } from "../../config";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+function createData(product, status, inventory, type, vendor) {
+	return { product, status, inventory, type, vendor };
 }
 
-const rows = [
-	createData("Cupcake", 305, 3.7, 67, 4.3),
-	createData("Donut", 452, 25.0, 51, 4.9),
-	createData("Eclair", 262, 16.0, 24, 6.0),
-	createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-	createData("Gingerbread", 356, 16.0, 49, 3.9),
-	createData("Honeycomb", 408, 3.2, 87, 6.5),
-	createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-	createData("Jelly Bean", 375, 0.0, 94, 0.0),
-	createData("KitKat", 518, 26.0, 65, 7.0),
-	createData("Lollipop", 392, 0.2, 98, 0.0),
-	createData("Marshmallow", 318, 0, 81, 2.0),
-	createData("Nougat", 360, 19.0, 9, 37.0),
-	createData("Oreo", 437, 18.0, 63, 4.0),
-];
 
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
@@ -70,17 +59,22 @@ function stableSort(array, comparator) {
 
 const headCells = [
 	{
-		id: "Product",
+		id: "product",
 		numeric: false,
 		disablePadding: true,
 		label: "Products",
 	},
-	{ id: "Status", numeric: false, disablePadding: false, label: "Status" },
-	{ id: "Inventory", numeric: false, disablePadding: false, label: "Inventory" },
-	{ id: "Type", numeric: false, disablePadding: false, label: "Type" },
+	{ id: "status", numeric: true, disablePadding: false, label: "Status" },
 	{
-		id: "Vendor",
-		numeric: false,
+		id: "inventory",
+		numeric: true,
+		disablePadding: false,
+		label: "Inventory",
+	},
+	{ id: "type", numeric: true, disablePadding: false, label: "Type" },
+	{
+		id: "vendor",
+		numeric: true,
 		disablePadding: false,
 		label: "Vendor",
 	},
@@ -205,17 +199,17 @@ const EnhancedTableToolbar = (props) => {
 			)}
 
 			{numSelected > 0 ? (
-	<ButtonGroup variant="text" color="secondary" aria-label="outlined secondary button group" size = "meduim" >
-				  <Button>Edit</Button>
-				  <Button>Delete</Button>
+				<ButtonGroup
+					variant="text"
+					color="secondary"
+					aria-label="outlined secondary button group"
+					size="meduim"
+				>
+					<Button>Edit</Button>
+					<Button>Delete</Button>
 				</ButtonGroup>
-
-
-
 			) : (
-			<Button  color="primary">
-				        Add 
-				      </Button>
+				<Button color="primary">Add</Button>
 			)}
 		</Toolbar>
 	);
@@ -249,12 +243,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function EnhancedTable() {
+export default function EnhancedTable(props) {
 	const classes = useStyles();
 	const [order, setOrder] = React.useState("asc");
-	const [orderBy, setOrderBy] = React.useState("Status");
+	const [orderBy, setOrderBy] = React.useState("status");
 	const [selected, setSelected] = React.useState([]);
-
+	
+	const [rows, setRows] = React.useState([]);
 	console.log(selected);
 	const [page, setPage] = React.useState(0);
 	const [dense, setDense] = React.useState(false);
@@ -268,19 +263,19 @@ export default function EnhancedTable() {
 
 	const handleSelectAllClick = (event) => {
 		if (event.target.checked) {
-			const newSelecteds = rows.map((n) => n.Product);
+			const newSelecteds = rows.map((n) => n.product);
 			setSelected(newSelecteds);
 			return;
 		}
 		setSelected([]);
 	};
 
-	const handleClick = (event, Product) => {
-		const selectedIndex = selected.indexOf(Product);
+	const handleClick = (event, product) => {
+		const selectedIndex = selected.indexOf(product);
 		let newSelected = [];
 
 		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, Product);
+			newSelected = newSelected.concat(selected, product);
 		} else if (selectedIndex === 0) {
 			newSelected = newSelected.concat(selected.slice(1));
 		} else if (selectedIndex === selected.length - 1) {
@@ -308,10 +303,62 @@ export default function EnhancedTable() {
 		setDense(event.target.checked);
 	};
 
-	const isSelected = (Product) => selected.indexOf(Product) !== -1;
+	const isSelected = (product) => selected.indexOf(product) !== -1;
 
 	const emptyRows =
 		rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+
+	const [Products, setProducts] = useState([]);
+	const [Skip, setSkip] = useState(0);
+	const [Limit, setLimit] = useState(8);
+	const [PostSize, setPostSize] = useState(0);
+	const [Filters, setFilters] = useState({
+		continents: [],
+		price: [],
+	});
+	const [Searchitems, setSearchitems] = useState("");
+
+	const storeName = props.storeName;
+	console.log("this is from productList", storeName);
+
+	useEffect(() => {
+		const variables = {
+			skip: 0,
+			limit: Limit,
+			filters: Filters,
+		};
+
+		axios
+			// `${USER_SERVER}/users/getinfo`
+			// .post("http://localhost:5000/product/getProducts", variables)
+			.post(
+				`${USER_SERVER}/product/getProducts?storeName=${storeName}`,
+				variables
+			)
+			.then((response) => {
+				if (response.data.success) {
+					console.log(response.data.products);
+					setProducts(response.data.products);
+					let temprow = [];
+
+					response.data.products.map( (element,index) => {
+							temprow.push(	createData(element.title, 305, 3.7, 67, 4.3) );
+					});
+
+					setRows(temprow);
+					console.log("hehe", rows);
+
+				} else {
+					alert("Failed to fetch the products");
+					console.log(response.err);
+				}
+			})
+			.catch((error) => {
+				console.log("card with revvvvv", error);
+			});
+	}, []);
+
+
 
 	return (
 		<div className={classes.root}>
@@ -340,19 +387,21 @@ export default function EnhancedTable() {
 									page * rowsPerPage + rowsPerPage
 								)
 								.map((row, index) => {
-									const isItemSelected = isSelected(row.Product);
+									const isItemSelected = isSelected(
+										row.product
+									);
 									const labelId = `enhanced-table-checkbox-${index}`;
 
 									return (
 										<TableRow
 											hover
 											onClick={(event) =>
-												handleClick(event, row.Product)
+												handleClick(event, row.product)
 											}
 											role="checkbox"
 											aria-checked={isItemSelected}
 											tabIndex={-1}
-											key={row.Product}
+											key={row.product}
 											selected={isItemSelected}
 										>
 											<TableCell padding="checkbox">
@@ -370,19 +419,19 @@ export default function EnhancedTable() {
 												scope="row"
 												padding="none"
 											>
-												{row.Product}
+												{row.product}
 											</TableCell>
 											<TableCell align="right">
-												{row.Status}
+												{row.status}
 											</TableCell>
 											<TableCell align="right">
-												{row.Inventory}
+												{row.inventory}
 											</TableCell>
 											<TableCell align="right">
-												{row.Type}
+												{row.type}
 											</TableCell>
 											<TableCell align="right">
-												{row.Vendor}
+												{row.vendor}
 											</TableCell>
 										</TableRow>
 									);

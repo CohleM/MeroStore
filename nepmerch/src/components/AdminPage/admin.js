@@ -129,7 +129,7 @@ export default function VerticalTabs(props) {
 					Item Two
 				</TabPanel>
 				<TabPanel value={value} index={2}>
-		<ProductList/>
+		<ProductList storeName = {storeName} />
 				</TabPanel>
 				<TabPanel value={value} index={3}>
 					Item Four
