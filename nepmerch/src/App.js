@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { withRouter } from "react-router";
 import registerUser from "./components/users/registerUser";
+import AdminPage from "./components/AdminPage/admin.js";
 
 import RegisterStore from "./components/users/RegisterStore";
 import Navbar from "./components/Navbar/navbar.component";
@@ -37,36 +38,69 @@ const Main = withRouter(({ location }) => {
 		<div>
 			{location.pathname !== "/store/:storeName/users/login" &&
 				location.pathname !== "/store/:storeName/users/register" &&
+				location.pathname !== "/" &&
+				location.pathname !== "/store/:storeName/admin" && <Navbar />}
 
-		location.pathname !== "/" &&
-
-				<Navbar />}
-
-			
-				<Route exact path="/store/:storeName" component={MainStore} />
+			<Route exact path="/store/:storeName" component={MainStore} />
 			<br />
 			<Switch>
-		<Route exact path="/" exact component={RegisterStore} />
+				<Route exact path="/" exact component={RegisterStore} />
 				{/* <Route exact path="/edit/:id" component={EditExercise} /> */}
 				{/* <Route exact path="/create" component={CreateExercise} /> */}
-				<Route exact path="/store/:storeName/product/upload" component={UploadProduct} />
+				<Route
+					exact
+					path="/store/:storeName/product/upload"
+					component={UploadProduct}
+				/>
 				{/* <Route exact path="/user" component={CreateUser} /> */}
-				<Route exact path="/store/:storeName/product/:productId" component={ProductPage} />
-				<Route exact path="/store/:storeName/search/:searchValue" component={CardsWithReview} />
-				<Route exact path="/store/:storeName/users/register" component={registerUser} />
-				<Route exact path="/store/:storeName/users/logout" component={Logout} />
-				<Route exact path="/store/:storeName/users/login" component={Login} />
+				<Route
+					exact
+					path="/store/:storeName/product/:productId"
+					component={ProductPage}
+				/>
+				<Route
+					exact
+					path="/store/:storeName/search/:searchValue"
+					component={CardsWithReview}
+				/>
+				<Route
+					exact
+					path="/store/:storeName/users/register"
+					component={registerUser}
+				/>
+				<Route
+					exact
+					path="/store/:storeName/users/logout"
+					component={Logout}
+				/>
+				<Route
+					exact
+					path="/store/:storeName/users/login"
+					component={Login}
+				/>
 
-				<Route exact path="/store/:storeName/users/cartPage" component={CartPage} />
+				<Route
+					exact
+					path="/store/:storeName/users/cartPage"
+					component={CartPage}
+				/>
 
-				<Route exact path="/store/:storeName/users/history" component={History} />
+				<Route
+					exact
+					path="/store/:storeName/users/history"
+					component={History}
+				/>
+
+				<Route
+					exact
+					path="/store/:storeName/admin"
+					component={AdminPage}
+				/>
 			</Switch>
 			{location.pathname !== "/store/:storeName/users/login" &&
-				location.pathname !== "/store/:storeName/users/register" 
-		&&
-
-		location.pathname !== "/" 
-				&& <Footer />}
+				location.pathname !== "/store/:storeName/users/register" &&
+				location.pathname !== "/" &&
+				location.pathname !== "/store/:storeName/admin" && <Footer />}
 		</div>
 	);
 });

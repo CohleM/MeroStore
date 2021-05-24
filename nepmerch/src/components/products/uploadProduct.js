@@ -19,7 +19,8 @@ function UploadProduct(props) {
 	const [ContinentValue, setContinentValue] = useState("");
 	const [Images, setImages] = useState([]);
 	
-	const storeName  = props.match.params.storeName;
+//	const storeName  = props.match.params.storeName;
+	const storeName  = "RustCohle"; 
 
 	const onTitleChange = (event) => {
 		setTitleValue(event.currentTarget.value);
