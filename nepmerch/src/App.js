@@ -96,6 +96,12 @@ const Main = withRouter(({ location }) => {
 					path="/store/:storeName/admin"
 					component={AdminPage}
 				/>
+		<Route
+					exact
+					path="/store/:storeName/admin/add"
+					component={UploadProduct }
+				/>
+
 			</Switch>
 			{location.pathname !== "/store/:storeName/users/login" &&
 				location.pathname !== "/store/:storeName/users/register" &&

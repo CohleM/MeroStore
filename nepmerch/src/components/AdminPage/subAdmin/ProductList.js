@@ -25,11 +25,12 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { USER_SERVER } from "../../config";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
+import ProductUpload from "../../products/uploadProduct";
 function createData(product, status, inventory, type, vendor) {
 	return { product, status, inventory, type, vendor };
 }
-
 
 function descendingComparator(a, b, orderBy) {
 	if (b[orderBy] < a[orderBy]) {
@@ -135,6 +136,7 @@ function EnhancedTableHead(props) {
 	);
 }
 
+
 EnhancedTableHead.propTypes = {
 	classes: PropTypes.object.isRequired,
 	numSelected: PropTypes.number.isRequired,
@@ -169,6 +171,26 @@ const useToolbarStyles = makeStyles((theme) => ({
 }));
 
 const EnhancedTableToolbar = (props) => {
+
+
+	  const history = useHistory();
+	
+const  UploadProduct   = () =>  {
+	history.push(`/store/${props.storeName}/admin/add`)
+	console.log('hello');
+//	return (
+//		
+//	<ProductUpload />
+//	);
+}
+
+
+		
+
+
+
+
+
 	const classes = useToolbarStyles();
 	const { numSelected } = props;
 
@@ -209,7 +231,13 @@ const EnhancedTableToolbar = (props) => {
 					<Button>Delete</Button>
 				</ButtonGroup>
 			) : (
-				<Button color="primary">Add</Button>
+				<Button
+					color="primary"
+					variant="outlined"
+					onClick={UploadProduct}
+				>
+					Add
+				</Button>
 			)}
 		</Toolbar>
 	);
@@ -222,10 +250,14 @@ EnhancedTableToolbar.propTypes = {
 const useStyles = makeStyles((theme) => ({
 	root: {
 		width: "100%",
+	//	margin: "0 auto"
 	},
 	paper: {
 		width: "100%",
-		marginBottom: theme.spacing(2),
+			
+	//	marginBottom: theme.spacing(2),
+	//	marginLeft: theme.spacing(3),
+		margin: theme.spacing(4),
 	},
 	table: {
 		minWidth: 750,
@@ -248,7 +280,7 @@ export default function EnhancedTable(props) {
 	const [order, setOrder] = React.useState("asc");
 	const [orderBy, setOrderBy] = React.useState("status");
 	const [selected, setSelected] = React.useState([]);
-	
+
 	const [rows, setRows] = React.useState([]);
 	console.log(selected);
 	const [page, setPage] = React.useState(0);
@@ -321,6 +353,14 @@ export default function EnhancedTable(props) {
 	const storeName = props.storeName;
 	console.log("this is from productList", storeName);
 
+
+
+
+
+
+
+
+
 	useEffect(() => {
 		const variables = {
 			skip: 0,
@@ -341,13 +381,14 @@ export default function EnhancedTable(props) {
 					setProducts(response.data.products);
 					let temprow = [];
 
-					response.data.products.map( (element,index) => {
-							temprow.push(	createData(element.title, 305, 3.7, 67, 4.3) );
+					response.data.products.map((element, index) => {
+						temprow.push(
+							createData(element.title, 305, 3.7, 67, 4.3)
+						);
 					});
 
 					setRows(temprow);
 					console.log("hehe", rows);
-
 				} else {
 					alert("Failed to fetch the products");
 					console.log(response.err);
@@ -358,12 +399,13 @@ export default function EnhancedTable(props) {
 			});
 	}, []);
 
-
-
 	return (
 		<div className={classes.root}>
 			<Paper className={classes.paper}>
-				<EnhancedTableToolbar numSelected={selected.length} />
+				<EnhancedTableToolbar
+					numSelected={selected.length}
+					storeName={storeName}
+				/>
 				<TableContainer>
 					<Table
 						className={classes.table}
