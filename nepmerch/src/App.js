@@ -29,6 +29,44 @@ import ProductPage from "./components/ProductPage/ProductPage";
 import MainStore from "./components/StorePage/MainStore";
 import SearchFeature from "./components/utilities/SearchFeature";
 import CardsWithReview from "./components/HomePage/sections/CardsWithReview";
+import SidebarWithNavbar from "./components/AdminPage/sidebarAndNavbar";
+import ProductList from "./components/AdminPage/subAdmin/ProductList";
+import Home from "./components/AdminPage/subAdmin/Home";
+
+export const WithSidebarAndNavbar = ({ component: Component, ...rest }) => {
+	return (
+		<Route
+			{...rest}
+			component={(props) => (
+				<div>
+					<SidebarWithNavbar {...props} />
+					<Component {...props} />
+					<Footer />
+				</div>
+			)}
+		/>
+	);
+};
+
+export const WithNavbarAndFooter = ({ component: Component, ...rest }) => {
+	return (
+		<Route
+			{...rest}
+			component={(props) => (
+				<div>
+					<Navbar />
+					<Component {...props} />
+					<Footer />
+				</div>
+			)}
+		/>
+	);
+};
+
+export const PlainRoute = ({ component: Component, ...rest }) => {
+	return <Route {...rest} component={(props) => <Component {...props} />} />;
+};
+
 const Main = withRouter(({ location }) => {
 	// const [Searchitems, setSearchitems] = useState("");
 	// const forSearch = (newSearchItems) => {
@@ -36,77 +74,81 @@ const Main = withRouter(({ location }) => {
 	// };
 	return (
 		<div>
-			{location.pathname !== "/store/:storeName/users/login" &&
-				location.pathname !== "/store/:storeName/users/register" &&
-				location.pathname !== "/" &&
-				location.pathname !== "/store/:storeName/admin" && <Navbar />}
-
-			<Route exact path="/store/:storeName" component={MainStore} />
 			<br />
 			<Switch>
-				<Route exact path="/" exact component={RegisterStore} />
-				{/* <Route exact path="/edit/:id" component={EditExercise} /> */}
-				{/* <Route exact path="/create" component={CreateExercise} /> */}
-				<Route
+				<WithNavbarAndFooter
+					exact
+					path="/store/:storeName"
+					component={MainStore}
+				/>
+				<PlainRoute exact path="/" component={RegisterStore} />
+				<PlainRoute
 					exact
 					path="/store/:storeName/product/upload"
 					component={UploadProduct}
 				/>
-				{/* <Route exact path="/user" component={CreateUser} /> */}
-				<Route
+
+				<WithNavbarAndFooter
 					exact
 					path="/store/:storeName/product/:productId"
 					component={ProductPage}
 				/>
-				<Route
+				<WithNavbarAndFooter
 					exact
 					path="/store/:storeName/search/:searchValue"
 					component={CardsWithReview}
 				/>
-				<Route
+				<PlainRoute
 					exact
 					path="/store/:storeName/users/register"
 					component={registerUser}
 				/>
-				<Route
+				<WithNavbarAndFooter
 					exact
 					path="/store/:storeName/users/logout"
 					component={Logout}
 				/>
-				<Route
+				<PlainRoute
 					exact
 					path="/store/:storeName/users/login"
 					component={Login}
 				/>
 
-				<Route
+				<WithNavbarAndFooter
 					exact
 					path="/store/:storeName/users/cartPage"
 					component={CartPage}
 				/>
 
-				<Route
+				<WithNavbarAndFooter
 					exact
 					path="/store/:storeName/users/history"
 					component={History}
 				/>
 
-				<Route
+				<PlainRoute
 					exact
 					path="/store/:storeName/admin"
 					component={AdminPage}
 				/>
-		<Route
+				<PlainRoute
 					exact
 					path="/store/:storeName/admin/add"
-					component={UploadProduct }
+					component={UploadProduct}
 				/>
 
+				<WithSidebarAndNavbar
+					exact
+					path="/store/:storeName/admin/products"
+					component={ProductList}
+				/>
+
+				<WithSidebarAndNavbar
+					exact
+					path="/store/:storeName/admin/home"
+					component={Home}
+				/>
 			</Switch>
-			{location.pathname !== "/store/:storeName/users/login" &&
-				location.pathname !== "/store/:storeName/users/register" &&
-				location.pathname !== "/" &&
-				location.pathname !== "/store/:storeName/admin" && <Footer />}
 		</div>
 	);
 });

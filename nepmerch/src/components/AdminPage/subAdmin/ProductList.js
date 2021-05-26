@@ -65,7 +65,7 @@ const headCells = [
 		disablePadding: true,
 		label: "Products",
 	},
-	{ id: "status", numeric: true, disablePadding: false, label: "Status" },
+	{ id: "status", numeric: true , disablePadding: false, label: "Status" },
 	{
 		id: "inventory",
 		numeric: true,
@@ -106,6 +106,8 @@ function EnhancedTableHead(props) {
 						checked={rowCount > 0 && numSelected === rowCount}
 						onChange={onSelectAllClick}
 						inputProps={{ "aria-label": "select all desserts" }}
+
+					color="primary"
 					/>
 				</TableCell>
 				{headCells.map((headCell) => (
@@ -136,7 +138,6 @@ function EnhancedTableHead(props) {
 	);
 }
 
-
 EnhancedTableHead.propTypes = {
 	classes: PropTypes.object.isRequired,
 	numSelected: PropTypes.number.isRequired,
@@ -155,15 +156,15 @@ const useToolbarStyles = makeStyles((theme) => ({
 	highlight:
 		theme.palette.type === "light"
 			? {
-					color: theme.palette.secondary.main,
+					color: theme.palette.primary.main,
 					backgroundColor: lighten(
-						theme.palette.secondary.light,
+						theme.palette.primary.light,
 						0.85
 					),
 			  }
 			: {
 					color: theme.palette.text.primary,
-					backgroundColor: theme.palette.secondary.dark,
+					backgroundColor: theme.palette.primary.dark,
 			  },
 	title: {
 		flex: "1 1 100%",
@@ -171,25 +172,16 @@ const useToolbarStyles = makeStyles((theme) => ({
 }));
 
 const EnhancedTableToolbar = (props) => {
+	const history = useHistory();
 
-
-	  const history = useHistory();
-	
-const  UploadProduct   = () =>  {
-	history.push(`/store/${props.storeName}/admin/add`)
-	console.log('hello');
-//	return (
-//		
-//	<ProductUpload />
-//	);
-}
-
-
-		
-
-
-
-
+	const UploadProduct = () => {
+		history.push(`/store/${props.storeName}/admin/add`);
+		console.log("hello");
+		//	return (
+		//
+		//	<ProductUpload />
+		//	);
+	};
 
 	const classes = useToolbarStyles();
 	const { numSelected } = props;
@@ -223,8 +215,8 @@ const  UploadProduct   = () =>  {
 			{numSelected > 0 ? (
 				<ButtonGroup
 					variant="text"
-					color="secondary"
-					aria-label="outlined secondary button group"
+					color="primary"
+					aria-label="outlined primary button group"
 					size="meduim"
 				>
 					<Button>Edit</Button>
@@ -250,17 +242,31 @@ EnhancedTableToolbar.propTypes = {
 const useStyles = makeStyles((theme) => ({
 	root: {
 		width: "100%",
-	//	margin: "0 auto"
+		//	margin: "0 auto"
 	},
 	paper: {
-		width: "100%",
-			
-	//	marginBottom: theme.spacing(2),
-	//	marginLeft: theme.spacing(3),
-		margin: theme.spacing(4),
+		//	marginBottom: theme.spacing(2),
+		//	marginLeft: theme.spacing(3),
+		margin: "auto",
+
+		maxWidth : 360,
+			marginTop: theme.spacing(6),
+
+		[theme.breakpoints.up("sm")]: {
+			maxWidth : "100%",
+			marginTop: theme.spacing(8),
+			marginLeft: 260, 
+			marginRight : theme.spacing(5),
+
+		},
 	},
 	table: {
-		minWidth: 750,
+	
+		maxWidth : 360,
+		[theme.breakpoints.up("sm")]: {
+			maxWidth : "100%",
+		},
+
 	},
 	visuallyHidden: {
 		border: 0,
@@ -350,16 +356,9 @@ export default function EnhancedTable(props) {
 	});
 	const [Searchitems, setSearchitems] = useState("");
 
-	const storeName = props.storeName;
+	//const storeName = props.storeName;
+	const storeName  = props.match.params.storeName;
 	console.log("this is from productList", storeName);
-
-
-
-
-
-
-
-
 
 	useEffect(() => {
 		const variables = {
@@ -383,7 +382,7 @@ export default function EnhancedTable(props) {
 
 					response.data.products.map((element, index) => {
 						temprow.push(
-							createData(element.title, 305, 3.7, 67, 4.3)
+							createData(element.title, "hello", 3.7, 67, 4.3)
 						);
 					});
 
@@ -402,13 +401,18 @@ export default function EnhancedTable(props) {
 	return (
 		<div className={classes.root}>
 			<Paper className={classes.paper}>
+
+
+
 				<EnhancedTableToolbar
 					numSelected={selected.length}
 					storeName={storeName}
 				/>
-				<TableContainer>
-					<Table
+				<TableContainer 
+
 						className={classes.table}
+		>
+					<Table
 						aria-labelledby="tableTitle"
 						size={dense ? "small" : "medium"}
 						aria-label="enhanced table"
@@ -440,6 +444,7 @@ export default function EnhancedTable(props) {
 											onClick={(event) =>
 												handleClick(event, row.product)
 											}
+
 											role="checkbox"
 											aria-checked={isItemSelected}
 											tabIndex={-1}
@@ -453,6 +458,9 @@ export default function EnhancedTable(props) {
 														"aria-labelledby":
 															labelId,
 													}}
+
+
+					color="primary"
 												/>
 											</TableCell>
 											<TableCell
