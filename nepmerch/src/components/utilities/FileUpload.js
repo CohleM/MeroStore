@@ -2,6 +2,36 @@ import React, { useState } from "react";
 import Dropzone from "react-dropzone";
 import axios from "axios";
 import { USER_SERVER } from "../config";
+import { Paper, Divider } from "@material-ui/core";
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { makeStyles } from "@material-ui/core/styles";
+//import { useStyles } from "./Style";
+import TextField from "@material-ui/core/TextField";
+
+import Typography from "@material-ui/core/Typography";
+
+const useToolbarStyles = makeStyles((theme) => ({
+paper: {
+		
+		justifyContent: 'center',	
+	[theme.breakpoints.up("sm")]: {
+
+		 border: "2px dashed #d1d1d1",
+		height : 300,
+		padding : 120,
+	},
+},
+
+	icon : {
+		fontSize : 40,
+
+	}
+	}));
+
+
+
+
+
 function FileUpload(props) {
 	const [Images, setImages] = useState([]);
 	const onDrop = (files) => {
@@ -35,13 +65,30 @@ function FileUpload(props) {
 		props.refreshfunction(newImages);
 	};
 
+	const classes = useToolbarStyles();
+
 	return (
 		<div>
 			<Dropzone onDrop={onDrop} multiple={false} maxSize={8000000000}>
 				{({ getRootProps, getInputProps }) => (
 					<div {...getRootProps()}>
-						<input {...getInputProps()} />
-						Click me to upload a file!
+						<input {...getInputProps()}  />
+					<Paper className = {classes.paper } square > 
+
+ <Typography align='center'>
+					    <CloudUploadIcon
+					className = {classes.icon}
+					      type='submit'
+					      variant='contained'
+					
+					  /   >
+
+ <Typography > Add media files  here  </Typography>
+
+					  </Typography>
+
+
+							</Paper>
 					</div>
 				)}
 			</Dropzone>

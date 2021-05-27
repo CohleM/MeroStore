@@ -11,7 +11,7 @@ import Navbar from "./components/Navbar/navbar.component";
 // import EditExercise from "./components/edit-exercise.component";
 // import CreateExercise from "./components/create-exercise.component";
 // import CreateUser from "./components/create-user.component";
-import UploadProduct from "./components/products/uploadProduct";
+//import UploadProduct from "./components/products/uploadProduct";
 import LandingPage from "./components/products/LandingPage";
 //             { <Route path = "/" exact component  = {ExerciseList} /> }
 import DetailedProduct from "./components/products/DetailedProduct";
@@ -32,16 +32,16 @@ import CardsWithReview from "./components/HomePage/sections/CardsWithReview";
 import SidebarWithNavbar from "./components/AdminPage/sidebarAndNavbar";
 import ProductList from "./components/AdminPage/subAdmin/ProductList";
 import Home from "./components/AdminPage/subAdmin/Home";
+import UploadProduct from "./components/AdminPage/subAdmin/UploadProduct";
 
 export const WithSidebarAndNavbar = ({ component: Component, ...rest }) => {
 	return (
 		<Route
 			{...rest}
 			component={(props) => (
-				<div>
+				<div >
 					<SidebarWithNavbar {...props} />
 					<Component {...props} />
-					<Footer />
 				</div>
 			)}
 		/>
@@ -74,7 +74,6 @@ const Main = withRouter(({ location }) => {
 	// };
 	return (
 		<div>
-			<br />
 			<Switch>
 				<WithNavbarAndFooter
 					exact
@@ -131,7 +130,7 @@ const Main = withRouter(({ location }) => {
 					path="/store/:storeName/admin"
 					component={AdminPage}
 				/>
-				<PlainRoute
+				<WithSidebarAndNavbar
 					exact
 					path="/store/:storeName/admin/add"
 					component={UploadProduct}

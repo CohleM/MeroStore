@@ -51,6 +51,11 @@ const useStyles = makeStyles((theme) => ({
 		flexGrow: 1,
 		padding: theme.spacing(3),
 	},
+
+	setDiv : {
+	//paddingLeft: 300,
+
+	},
 }));
 
 function ResponsiveDrawer(props) {
@@ -73,7 +78,7 @@ function ResponsiveDrawer(props) {
 
 
 	const drawer = (
-		<div>
+		<div className = {classes.setDiv }>
 			
 				<Divider />
 			<List>

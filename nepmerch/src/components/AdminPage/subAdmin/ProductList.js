@@ -250,13 +250,20 @@ const useStyles = makeStyles((theme) => ({
 		margin: "auto",
 
 		maxWidth : 360,
-			marginTop: theme.spacing(6),
+			marginTop: theme.spacing(8),
+			border : "1px solid #b5b5b5",
+	marginRight: theme.spacing(1.5),
+			borderRadius : 0, 
 
+		marginTop: theme.spacing(10),
+	marginRight: theme.spacing(1.5),
+		marginLeft: theme.spacing(1.5),
 		[theme.breakpoints.up("sm")]: {
 			maxWidth : "100%",
-			marginTop: theme.spacing(8),
-			marginLeft: 260, 
-			marginRight : theme.spacing(5),
+			marginTop: theme.spacing(15),
+			marginLeft: 300, 
+			marginRight : theme.spacing(6),
+
 
 		},
 	},
