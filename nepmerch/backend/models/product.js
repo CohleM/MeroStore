@@ -39,6 +39,17 @@ const productSchema = mongoose.Schema(
 			type: Number,
 			default: 0,
 		},
+		inventory: {
+			type: String,
+		},
+	typ: {
+			type: String,
+		},
+		vendor: {
+			type: String,
+		},
+	
+
 	},
 	{ timestamps: true }
 );

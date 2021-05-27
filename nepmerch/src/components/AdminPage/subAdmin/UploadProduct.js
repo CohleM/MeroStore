@@ -38,16 +38,45 @@ const useToolbarStyles = makeStyles((theme) => ({
 	root: {
 		width: "100%",
 	},
+
+	margin: {
+		border: "1px solid grey",
+		borderRadius: 0,
+		textAlign: "center",
+		width: "100%",
+		height: "50px",
+		lineHeight: 2.66,
+		letterSpacing: "0.08333em",
+		fontWeight: 500,
+		//backgroundColor : "#645f6b"
+	},
+
+	searchres: {
+		// fontWeight: 400,
+		fontSize: "0.75rem",
+		lineHeight: 2.66,
+		letterSpacing: "0.08333em",
+		textTransform: "uppercase",
+		display: "flex",
+		fontWeight: "600",
+
+		[theme.breakpoints.up("sm")]: {
+			// fontWeight: "600",
+		},
+	},
+
 	paper: {
 		margin: "auto",
+
 		[theme.breakpoints.up("sm")]: {
 			marginLeft: 300,
 
 			marginTop: theme.spacing(15),
 			marginRight: theme.spacing(6),
-			paddingLeft: theme.spacing(2),
-			paddingRight: theme.spacing(1),
+			paddingLeft: theme.spacing(4),
+			paddingRight: theme.spacing(4),
 			paddingTop: theme.spacing(2),
+			maxWidth: "50%",
 		},
 		marginRight: theme.spacing(1.5),
 		marginLeft: theme.spacing(1.5),
@@ -56,8 +85,8 @@ const useToolbarStyles = makeStyles((theme) => ({
 		paddingTop: theme.spacing(2),
 
 		marginTop: theme.spacing(10),
-		border: "1px solid #b5b5b5",
 		borderRadius: 0,
+		boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px;",
 	},
 	title: {},
 	form: {},
@@ -65,11 +94,14 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 function UploadProduct(props) {
 	const [TitleValue, setTitleValue] = useState("");
+	const [InventoryValue, setInventoryValue] = useState("");
+	const [TypeValue, setTypeValue] = useState("");
 	const [DescriptionValue, setDescriptionValue] = useState("");
 	const [PriceValue, setPriceValue] = useState(0);
 	const [ContinentValue, setContinentValue] = useState("");
 	const [Images, setImages] = useState([]);
 
+	const [VendorValue, setVendorValue] = useState([]);
 	const classes = useToolbarStyles();
 	//	const storeName  = props.match.params.storeName;
 	const storeName = "RustCohle";
@@ -81,9 +113,20 @@ function UploadProduct(props) {
 	const onDescriptionChange = (event) => {
 		setDescriptionValue(event.currentTarget.value);
 	};
+	const onTypeChange = (event) => {
+		setTypeValue(event.currentTarget.value);
+	};
 	const onPriceChange = (event) => {
 		setPriceValue(event.currentTarget.value);
 	};
+	const onInventoryChange = (event) => {
+		setInventoryValue(event.currentTarget.value);
+	};
+
+	const onVendorChange = (event) => {
+		setVendorValue(event.currentTarget.value);
+	};
+
 	const onContinentsSelectChange = (event) => {
 		setContinentValue(event.currentTarget.value);
 	};
@@ -100,6 +143,9 @@ function UploadProduct(props) {
 			price: PriceValue,
 			images: Images,
 			continents: ContinentValue,
+			typ: TypeValue,
+			inventory: InventoryValue,
+			vendor: VendorValue,
 		};
 		axios
 			.post(
@@ -151,12 +197,12 @@ function UploadProduct(props) {
 					</Grid>
 					<Grid item xs={12}>
 						<TextField
-							error
 							fullWidth
 							id="standard-basic"
-							label="Email"
-							onChange
+							label="Title"
 							helperText
+							onChange={onTitleChange}
+							value={TitleValue}
 						/>
 					</Grid>
 
@@ -168,6 +214,8 @@ function UploadProduct(props) {
 							rows={4}
 							variant="filled"
 							fullWidth
+							onChange={onDescriptionChange}
+							value={DescriptionValue}
 						/>
 					</Grid>
 
@@ -175,95 +223,68 @@ function UploadProduct(props) {
 						<FileUpload refreshfunction={updateImages} />
 					</Grid>
 
-
-							<Grid item xs={12}>
+					<Grid item xs={12}>
 						<TextField
-							error
 							fullWidth
 							id="standard-basic"
 							label="Price"
-							onChange
-							helperText
-						/>
-					</Grid>
-
-				<Grid item xs={12}>
-						<TextField
-							error
-							fullWidth
-							id="standard-basic"
-							label="Vendor"
-							onChange
-							helperText
-						/>
-					</Grid>
-
-				<Grid item xs={12}>
-						<TextField
-							error
-							fullWidth
-							id="standard-basic"
-							label="Inventory"
-							onChange
+							onChange={onPriceChange}
+							value={PriceValue}
 							helperText
 						/>
 					</Grid>
 
 					<Grid item xs={12}>
 						<TextField
-							error
 							fullWidth
 							id="standard-basic"
-							label="Type"
-							onChange
+							label="Vendor"
+							onChange={onVendorChange}
+							value={VendorValue}
 							helperText
 						/>
 					</Grid>
 
+					<Grid item xs={12}>
+						<TextField
+							fullWidth
+							id="standard-basic"
+							label="Inventory"
+							onChange={onInventoryChange}
+							value={InventoryValue}
+							helperText
+						/>
+					</Grid>
 
+					<Grid item xs={12}>
+						<TextField
+							fullWidth
+							id="standard-basic"
+							label="Type"
+							onChange={onTypeChange}
+							value={TypeValue}
+							helperText
+						/>
+					</Grid>
 
-
-
-
-
-
-
+					<Grid item xs={12}>
+						<Button
+							variant="outlined"
+							size="small"
+							className={classes.margin}
+							style={{ outline: "none" }}
+							onClick={onSubmit}
+						>
+							<Typography
+								className={classes.searchres}
+								color="textSecondary"
+							>
+								{" "}
+								Save{" "}
+							</Typography>{" "}
+						</Button>
+					</Grid>
 				</Grid>
-			</form>
-
-			<form>
-				<br />
-				<br />
-
-				<label>Description</label>
-				<textarea
-					onChange={onDescriptionChange}
-					value={DescriptionValue}
-				/>
-				<br />
-				<br />
-				<label>Price($)</label>
-				<input
-					onChange={onPriceChange}
-					value={PriceValue}
-					type="number"
-				/>
-				<br />
-				<br />
-				<select
-					onChange={onContinentsSelectChange}
-					value={ContinentValue}
-				>
-					{Continents.map((item) => (
-						<option key={item.key} value={item.key}>
-							{item.value}{" "}
-						</option>
-					))}
-				</select>
-				<br />
-				<br />
-
-				<button onClick={onSubmit}>Submit</button>
 			</form>
 		</Paper>
 	);

@@ -251,7 +251,8 @@ const useStyles = makeStyles((theme) => ({
 
 		maxWidth : 360,
 			marginTop: theme.spacing(8),
-			border : "1px solid #b5b5b5",
+
+		boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
 	marginRight: theme.spacing(1.5),
 			borderRadius : 0, 
 
