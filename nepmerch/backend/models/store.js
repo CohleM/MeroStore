@@ -34,7 +34,7 @@ async function storeModel() {
 	});
 
 	const storeList = await Store.find({});
-	console.log('storeList', storeList);	
+//	console.log('storeList', storeList);	
 	const result = { storeList, Store };
 	return result;
 }

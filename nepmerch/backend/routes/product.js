@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const multer = require("multer");
+const { productValidation } = require("../validations/productValidation");
+
 //const {  Product } = require("../models/product");
 const { productModel } = require("../models/product");
 //const product = require("../models/product");
@@ -73,11 +75,17 @@ router.post("/uploadImage", (req, res) => {
 });
 
 router.post("/uploadProduct", connDB, (req, res) => {
+	const { error } = productValidation(req.body);
+
+	if (error)
+		return res.status(400).send({
+			message: error.details[0].message,
+			type: error.details[0].path[0],
+		});
 	//console.log(req.user);
 	const product = new req.Product(req.body);
-	product.save((err,prod) => {
-
-		console.log('uploadProduct', prod);
+	product.save((err, prod) => {
+		console.log("uploadProduct", prod);
 		if (err) {
 			console.log(err);
 			return res.status(400).json({ success: false, err });
@@ -111,7 +119,6 @@ router.route("/getProducts").post(connDB, (req, res) => {
 	const Product = req.Product;
 
 	for (let key in req.body.filters) {
-
 		if (req.body.filters[key].length > 0) {
 			//console.log(req.body.filters[key])
 			if (key == "price") {
@@ -138,13 +145,11 @@ router.route("/getProducts").post(connDB, (req, res) => {
 					return res.status(400).json({ success: false, err });
 				}
 
-				return res
-					.status(200)
-					.json({
-						success: true,
-						products,
-						postSize: products.length,
-					});
+				return res.status(200).json({
+					success: true,
+					products,
+					postSize: products.length,
+				});
 			});
 	} else {
 		Product.find(findArgs)
@@ -156,13 +161,11 @@ router.route("/getProducts").post(connDB, (req, res) => {
 					return res.status(400).json({ success: false, err });
 				}
 
-				return res
-					.status(200)
-					.json({
-						success: true,
-						products,
-						postSize: products.length,
-					});
+				return res.status(200).json({
+					success: true,
+					products,
+					postSize: products.length,
+				});
 			});
 	}
 });
@@ -172,7 +175,7 @@ router.route("/product_by_id").get(connDB, (req, res) => {
 	const type = req.query.type;
 	const Product = req.Product;
 	let productIds = req.query.id;
-
+console.log('just checking' , Product );
 	//console.log(productIds);
 
 	if (type === "array") {
@@ -191,5 +194,32 @@ router.route("/product_by_id").get(connDB, (req, res) => {
 		//console.log(product);
 	});
 });
+
+//delete product
+router.route("/delete_product") .post( connDB, async (req, res) => {
+	//do something here
+	console.log("to delete", req.body.products);
+	try {
+		//const Product = req.Product;
+		let prod = req.body.products;
+		const result = await req.Product.deleteMany( { title: { $in : prod } });
+		console.log(req.Product);
+
+		res.status(200).json({
+					success: true,
+					message: "Deleted successfully",
+						result					
+				});
+
+	
+	} catch (error) {
+		res.status(400).json({ error });
+		console.log(error);
+	}
+});
+
+
+
+
 
 module.exports = router;
