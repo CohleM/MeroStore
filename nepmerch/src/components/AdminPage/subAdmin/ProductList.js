@@ -187,9 +187,11 @@ const EnhancedTableToolbar = (props) => {
 			.post(`${USER_SERVER}/product/delete_product?storeName=${props.storeName}`, variables
 			)
 			.then((res) => {
+				
 				console.log("deleted");
 				console.log(res.data.success, 'this is success');
 				console.log(res);
+				props.afterDelete();
 			})
 			.catch((error) => {
 				console.log("error on deleting");
@@ -358,6 +360,10 @@ export default function EnhancedTable(props) {
 	const handleChangeDense = (event) => {
 		setDense(event.target.checked);
 	};
+	const afterDeleteSet = () => {
+			setSelected([]);
+	}
+
 
 	const isSelected = (product) => selected.indexOf(product) !== -1;
 
@@ -420,7 +426,7 @@ export default function EnhancedTable(props) {
 			.catch((error) => {
 				console.log("card with revvvvv", error);
 			});
-	}, []);
+	}, [ selected]);
 
 	return (
 		<div className={classes.root}>
@@ -429,6 +435,7 @@ export default function EnhancedTable(props) {
 					numSelected={selected.length}
 					storeName={storeName}
 					selected={selected}
+					afterDelete={afterDeleteSet}
 				/>
 				<TableContainer className={classes.table}>
 					<Table
