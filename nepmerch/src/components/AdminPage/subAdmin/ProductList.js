@@ -181,21 +181,39 @@ const EnhancedTableToolbar = (props) => {
 
 	const onDelete = (event) => {
 		const variables = {
-		products : props.selected
-		}
+			products: props.selected,
+		};
 		axios
-			.post(`${USER_SERVER}/product/delete_product?storeName=${props.storeName}`, variables
+			.post(
+				`${USER_SERVER}/product/delete_product?storeName=${props.storeName}`,
+				variables
 			)
 			.then((res) => {
-				
 				console.log("deleted");
-				console.log(res.data.success, 'this is success');
+				console.log(res.data.success, "this is success");
 				console.log(res);
 				props.afterDelete();
 			})
 			.catch((error) => {
 				console.log("error on deleting");
 			});
+	};
+
+	const onEdit = (event) => {
+		if (props.selected.length > 1) alert("Please select only one product");
+		else {
+
+			props.products.map((element, ind) => {
+				if (element.title == props.selected[0]) {
+
+				history.push(`/store/${props.storeName}/admin/edit/${element._id}`);
+
+					console.log("yolo", element._id);
+				}
+
+
+			});
+		}
 	};
 
 	const classes = useToolbarStyles();
@@ -234,7 +252,7 @@ const EnhancedTableToolbar = (props) => {
 					aria-label="outlined primary button group"
 					size="meduim"
 				>
-					<Button>Edit</Button>
+					<Button onClick={onEdit}>Edit</Button>
 					<Button onClick={onDelete}>Delete</Button>
 				</ButtonGroup>
 			) : (
@@ -307,7 +325,6 @@ export default function EnhancedTable(props) {
 	const [selected, setSelected] = React.useState([]);
 
 	const [rows, setRows] = React.useState([]);
-	console.log(selected);
 
 	const [page, setPage] = React.useState(0);
 	const [dense, setDense] = React.useState(false);
@@ -361,9 +378,8 @@ export default function EnhancedTable(props) {
 		setDense(event.target.checked);
 	};
 	const afterDeleteSet = () => {
-			setSelected([]);
-	}
-
+		setSelected([]);
+	};
 
 	const isSelected = (product) => selected.indexOf(product) !== -1;
 
@@ -403,7 +419,6 @@ export default function EnhancedTable(props) {
 					console.log(response.data.products);
 					setProducts(response.data.products);
 					let temprow = [];
-
 					response.data.products.map((element, index) => {
 						temprow.push(
 							createData(
@@ -426,7 +441,7 @@ export default function EnhancedTable(props) {
 			.catch((error) => {
 				console.log("card with revvvvv", error);
 			});
-	}, [ selected]);
+	}, [selected]);
 
 	return (
 		<div className={classes.root}>
@@ -436,6 +451,7 @@ export default function EnhancedTable(props) {
 					storeName={storeName}
 					selected={selected}
 					afterDelete={afterDeleteSet}
+					products = {Products}
 				/>
 				<TableContainer className={classes.table}>
 					<Table

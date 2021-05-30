@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { withRouter } from "react-router";
 import registerUser from "./components/users/registerUser";
 import AdminPage from "./components/AdminPage/admin.js";
-
+import EditProduct from "./components/AdminPage/subAdmin/EditProduct"
 import RegisterStore from "./components/users/RegisterStore";
 import Navbar from "./components/Navbar/navbar.component";
 // import ExerciseList from "./components/exercises-list.component";
@@ -146,6 +146,12 @@ const Main = withRouter(({ location }) => {
 					exact
 					path="/store/:storeName/admin/home"
 					component={Home}
+				/>
+
+				<WithSidebarAndNavbar
+					exact
+					path="/store/:storeName/admin/edit/:productId"
+					component={EditProduct}
 				/>
 			</Switch>
 		</div>

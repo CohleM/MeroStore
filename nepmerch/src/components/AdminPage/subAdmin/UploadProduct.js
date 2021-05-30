@@ -97,6 +97,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 }));
 
 function UploadProduct(props) {
+
 	const [TitleValue, setTitleValue] = useState("");
 	const [InventoryValue, setInventoryValue] = useState("");
 	const [TypeValue, setTypeValue] = useState("");
@@ -109,8 +110,16 @@ function UploadProduct(props) {
 	const classes = useToolbarStyles();
 	const storeName = props.match.params.storeName;
 	//const storeName = "RustCohle";
-
+	const checkEdit = props.productId;
+	console.log('chekcing edit', checkEdit );
 	const dispatch = useDispatch();
+
+	if(checkEdit) {
+	console.log('yoasda');
+	//setTitleValue('');
+	}
+
+
 	const onTitleChange = (event) => {
 		setTitleValue(event.currentTarget.value);
 	};
