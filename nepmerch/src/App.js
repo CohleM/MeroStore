@@ -31,6 +31,8 @@ import SearchFeature from "./components/utilities/SearchFeature";
 import CardsWithReview from "./components/HomePage/sections/CardsWithReview";
 import SidebarWithNavbar from "./components/AdminPage/sidebarAndNavbar";
 import ProductList from "./components/AdminPage/subAdmin/ProductList";
+
+import CustomersList from "./components/AdminPage/subAdmin/Customers";
 import Home from "./components/AdminPage/subAdmin/Home";
 import UploadProduct from "./components/AdminPage/subAdmin/UploadProduct";
 
@@ -141,6 +143,13 @@ const Main = withRouter(({ location }) => {
 					path="/store/:storeName/admin/products"
 					component={ProductList}
 				/>
+            
+				<WithSidebarAndNavbar
+					exact
+					path="/store/:storeName/admin/customers"
+					component={CustomersList}
+				/>
+
 
 				<WithSidebarAndNavbar
 					exact
